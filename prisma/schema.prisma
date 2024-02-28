@@ -12,3 +12,40 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model Schedule {
+  id              String   @id @default(uuid())
+  data            DateTime
+  nome_cliente    String
+  numbero_celular String
+  horas           Int
+  feriado         Boolean  @default(false)
+  touro_mecanico  Boolean
+  fotos           Boolean
+  garcom          Boolean
+  dj              Boolean
+  climatizacao    Boolean
+  churrasqueira   Boolean
+  telao           Boolean
+  taxa_luz        Boolean
+  buffet          Boolean
+  valor_buffet    String?
+
+  valor_sugerido Float
+  valor_cobrado  Float
+}
+
+model Value {
+  versao           Int      @id @default(autoincrement())
+  data_modificacao DateTime @default(now()) @updatedAt
+  valor_padrao     Int
+  valor_feriado    Int
+  touro_mecanico   Int
+  fotos            Int
+  garcom           Int
+  dj               Int
+  climatizacao     Int
+  churrasqueira    Int
+  telao            Int
+  taxa_luz         Int
+}
