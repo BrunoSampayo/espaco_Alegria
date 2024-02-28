@@ -29,11 +29,13 @@ model Schedule {
   telao           Boolean
   taxa_luz        Boolean
   buffet          Boolean
-  valor_sugerido  Float
-  valor_cobrado   Float
+  valor_buffet    String?
+
+  valor_sugerido Float
+  valor_cobrado  Float
 }
 
-model Valores {
+model Value {
   versao           Int      @id @default(autoincrement())
   data_modificacao DateTime @default(now()) @updatedAt
   valor_padrao     Int
@@ -46,5 +48,4 @@ model Valores {
   churrasqueira    Int
   telao            Int
   taxa_luz         Int
-  buffet           Int
 }
