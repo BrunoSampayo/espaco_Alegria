@@ -14,22 +14,22 @@ datasource db {
 }
 
 model Schedule {
-  id              String   @id @default(uuid())
-  data            DateTime
-  nome_cliente    String
-  numbero_celular String
-  horas           Int
-  feriado         Boolean  @default(false)
-  touro_mecanico  Boolean
-  fotos           Boolean
-  garcom          Boolean
-  dj              Boolean
-  climatizacao    Boolean
-  churrasqueira   Boolean
-  telao           Boolean
-  taxa_luz        Boolean
-  buffet          Boolean
-  valor_buffet    String?
+  id             String   @id @default(uuid())
+  data           DateTime
+  nome_cliente   String
+  numero_celular String
+  horas          Int
+  feriado        Boolean  @default(false)
+  touro_mecanico Boolean
+  fotos          Boolean
+  garcom         Boolean
+  dj             Boolean
+  climatizacao   Boolean
+  churrasqueira  Boolean
+  telao          Boolean
+  taxa_luz       Boolean
+  buffet         Boolean
+  valor_buffet   String?
 
   valor_sugerido Float
   valor_cobrado  Float
