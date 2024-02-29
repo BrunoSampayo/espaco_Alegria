@@ -11,10 +11,11 @@ export default function Home() {
 
 
   return (
-    <div  className="flex flex-col content-center items-center mt-60 ">
+    <div  className="h-full w-full  flex flex-col items-center ">
       
       <CalendarDemo/>
       <ButtonAgend/>
+      
       </div>
   );
 }
