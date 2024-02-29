@@ -1,13 +1,27 @@
 import { Prisma } from '@/lib/prisma'
 import { scheduleSchema } from '@/lib/schema'
+import { NextRequest } from 'next/server';
+import 'dayjs'
+import dayjs from 'dayjs';
+export async function GET(req: NextRequest) {
+    const data = req.nextUrl.searchParams.get("date") as string;
+    //data format yyyy-mm-dd
 
-export async function GET() {
 
-    return Response.json({ ok: true })
+    const startOfMonth = dayjs(data).startOf('month').add(-1, 'day').toDate();
+    const endOfMonth = dayjs(data).endOf('month').add(-1, 'day').toDate();
+    const schedules = await Prisma.schedule.findMany({
+        where: {
+            data: {
+                lte: endOfMonth,
+                gte: startOfMonth
+            }
+        }
+    })
 
-
-
+    Response.json(schedules)
 }
+
 
 export async function POST(req: Request) {
     const data = await req.json()
