@@ -99,12 +99,7 @@ export default function Component() {
                                 Taxa de Luz
                             </Label>
                         </div>
-                        <div className="flex items-center gap-2">
-                            <Checkbox id="buffet" />
-                            <Label className="leading-none" htmlFor="buffet">
-                                Buffet
-                            </Label>
-                        </div>
+                        
                     </div>
                     <div className="space-y-2">
                         <Label htmlFor="buffet-price">Valor Buffet</Label>
