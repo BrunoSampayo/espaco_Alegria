@@ -15,10 +15,11 @@ datasource db {
 
 model Schedule {
   id             String   @id @default(uuid())
-  data           DateTime
   nome_cliente   String
   numero_celular String
-  horas          Int
+  data           DateTime
+  hora_inicio    String
+  hora_fim       String
   feriado        Boolean  @default(false)
   touro_mecanico Boolean
   fotos          Boolean
