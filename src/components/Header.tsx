@@ -1,12 +1,16 @@
 import Image from "next/image"
 import logo from '../../public/images/logo.png'
+import Link from "next/link"
 
 export const Header = () => {
-    return(
-        <div className="w-full bg-sky-300 bg-opacity-45 rounded-b-full top-0 absolute">
-            <img src={logo.src} alt='logo da Empressa' className="  h-48 w-72 mb-3 mx-auto item-center relative"/>
-        </div>
+    return (
+        <header className="w-full  bg-black/15 h-32 mb-4 ">
+            <Link href={'/'}>
+            <img src={logo.src} alt='logo da Empressa' className="  size-40 h-auto mb-3 mx-auto item-center " />
+            </Link>
             
-  
+        </header>
+
+
     )
 }
