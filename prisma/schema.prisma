@@ -21,19 +21,21 @@ model Schedule {
   hora_inicio    String
   hora_fim       String
   feriado        Boolean  @default(false)
-  touro_mecanico Boolean
-  fotos          Boolean
-  garcom         Boolean
-  dj             Boolean
-  climatizacao   Boolean
-  churrasqueira  Boolean
-  telao          Boolean
-  taxa_luz       Boolean
-  buffet         Boolean
-  valor_buffet   String?
-
+  touro_mecanico Int      @default(0)
+  fotos          Int      @default(0)
+  garcom         Int      @default(0)
+  dj             Int      @default(0)
+  climatizacao   Int      @default(0)
+  churrasqueira  Int      @default(0)
+  telao          Int      @default(0)
+  taxa_luz       Int      @default(0)
+  valor_buffet   Float    @default(0)
+  observacao     String
   valor_sugerido Float
   valor_cobrado  Float
+
+  @@unique([data, hora_inicio])
+  @@unique([data, hora_fim])
 }
 
 model Value {
