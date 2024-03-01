@@ -69,7 +69,7 @@ const valideFormSchema = z.object({
     valorBuffet:z.string().optional(),
     observacao: z.string().optional(),
     valorSugerido:z.string().optional(),
-    valorCobrado:z.string().optional(),
+    valorCobrado: z.string().optional(),
     
 
 
@@ -121,7 +121,7 @@ export default function Component() {
                     <div className="grid grid-cols-4 gap-10">
                         <div className="space-y-2">
                             <Label htmlFor="data">Dia</Label>
-                            <Input id="data"  type="date"
+                            <Input id="data" required type="date"
                             {...register('data')}   
                             />
                         </div>
@@ -134,32 +134,35 @@ export default function Component() {
                         </div>
                         <div className="space-y-2">
                             <Label htmlFor="horaInicio">Horario de Inicio</Label>
-                            <Input id="horaInicio"  type="time" 
+                            <Input id="horaInicio" required type="time" 
                             {...register('horaInicio')}   
                             />
                         </div>
                         <div className="space-y-2">
                             <Label htmlFor="horaFim">Horario Fim</Label>
-                            <Input id="horaFim"  type="time"
+                            <Input id="horaFim" required type="time"
                             {...register('horaFim')}   
                             />
                         </div>
                     </div>
                     
                     <div className="grid grid-cols-3 gap-4">
-                       
-                        <div className="flex items-center gap-2">
+                        <div>
+                        <div className="flex items-center mb-1 gap-2">
 
                             <Label className="leading-none" htmlFor="touroMecanico">
                                 Touro Mecânico
                             </Label>
+                            
                             <Input className="" id="touroMecanico"  type="number"
                             {...register('touroMecanico')}   
-                            />
-                            {errors.touroMecanico && <span>{errors.touroMecanico.message}</span>}
-
+                            /></div>   
+                            {errors.touroMecanico && <span className=" text-xs p-1 bg-white border border-red-300 rounded-md ">{errors.touroMecanico.message}</span>}                 
+                        
                         </div>
-                        <div className="flex items-center gap-2">
+
+                        <div>
+                        <div className="flex items-center mb-1 gap-2">
                             
                             <Label className="leading-none" htmlFor="fotos">
                                 Cabine de Fotos
@@ -167,73 +170,84 @@ export default function Component() {
                             <Input className="" id="fotos"  type="number" 
                             {...register('fotos')}
                               
-                            />
-                            {errors.fotos && <span>{errors.fotos.message}</span>}
+                            /></div>
+                            {errors.fotos && <span className=" text-xs p-1 bg-white border border-red-300 rounded-md ">{errors.fotos.message}</span>}
                         </div>
-                       
-                        <div className="flex items-center gap-2">
+
+                        <div>
+                        <div className="flex items-center mb-1 gap-2">
                             
                             <Label className="leading-none" htmlFor="garcom">
                                 Garçom
                             </Label>
                             <Input className="" id="garcom"  type="number" 
                             {...register('garcom')}   
-                            />
-                            {errors.garcom && <span>{errors.garcom.message}</span>}
+                            /></div>
+                            {errors.garcom && <span className=" text-xs p-1 bg-white border border-red-300 rounded-md ">{errors.garcom.message}</span>}
                         </div>
-                        <div className="flex items-center gap-2">
+                        
+                        <div>
+                        <div className="flex items-center mb-1 gap-2">
                         
                             <Label className="leading-none" htmlFor="dj">
                                 DJ
                             </Label>
                             <Input className="" id="dj"  type="number" 
                             {...register('dj')}   
-                            />
-                            {errors.dj && <span>{errors.dj.message}</span>}
+                            /></div>
+                            {errors.dj && <span className=" text-xs p-1 bg-white border border-red-300 rounded-md ">{errors.dj.message}</span>}
 
                         </div>
-                        <div className="flex items-center gap-2">
+
+                        <div>
+                        <div className="flex items-center mb-1 gap-2">
 
                             <Label className="leading-none" htmlFor="climatizacao">
                                 Climatização
                             </Label>
                             <Input className="" id="climatizacao"  type="number"
                             {...register('climatizacao')}   
-                            />
-                            {errors.climatizacao && <span>{errors.climatizacao.message}</span>}
+                            /></div>
+                            {errors.climatizacao && <span className=" text-xs p-1 bg-white border border-red-300 rounded-md ">{errors.climatizacao.message}</span>}
                             
                         </div>
-                        <div className="flex items-center gap-2">
+                        
+                        <div>
+                        <div className="flex items-center mb-1 gap-2">
 
                             <Label className="leading-none" htmlFor="churrasqueira">
                                 Churrasqueira
                             </Label>
                             <Input className="" id="churrasqueira"  type="number" 
                             {...register('churrasqueira')}   
-                            />
-                            {errors.churrasqueira && <span>{errors.churrasqueira.message}</span>}
+                            /></div>
+                            {errors.churrasqueira && <span className=" text-xs p-1 bg-white border border-red-300 rounded-md ">{errors.churrasqueira.message}</span>}
 
                         </div>
-                        <div className="flex items-center gap-2">
+
+                        <div>
+                        <div className="flex items-center mb-1 gap-2 ">
 
                             <Label className="leading-none" htmlFor="telao">
                                 Telão
                             </Label>
                             <Input className="" id="telao"  type="number" 
                             {...register('telao')}   
-                            />
-                            {errors.telao && <span>{errors.telao.message}</span>}
+                            /></div>
+                            {errors.telao && <span className=" text-xs p-1 bg-white border border-red-300 rounded-md ">{errors.telao.message}</span>}
 
                         </div>
-                        <div className="flex items-center gap-2">
+
+                        <div>
+                        <div className="flex items-center mb-1 gap-2">
 
                             <Label className="leading-none" htmlFor="taxaLuz">
                                 Taxa de Luz
                             </Label>
                             <Input className="" id="taxaLuz"  type="number" 
                             {...register('taxaLuz')}   
-                            />
-                            {errors.taxaLuz && <span>{errors.taxaLuz.message}</span>}
+                            /></div>
+                            {errors.taxaLuz && <span className=" text-xs p-1 bg-white border border-red-300 rounded-md ">{errors.taxaLuz.message}</span>}
 
                         </div>
                      
