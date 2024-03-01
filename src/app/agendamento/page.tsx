@@ -7,8 +7,13 @@ import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Button } from "@/components/ui/button"
+import { useForm } from "react-hook-form"
 
 export default function Component() {
+
+    const {handleSubmit, register} = useForm();
+
+
     return (
         <div className="h-\[calc\(100\%\-8rem\)\]">
             <div className="mx-auto  max-w-3xl space-y-8 bg-slate-100 p-10 rounded-sm">
@@ -44,66 +49,117 @@ export default function Component() {
                             <Input id="end-time" required type="time" />
                         </div>
                     </div>
+                    
                     <div className="grid grid-cols-3 gap-4">
                         <div className="flex items-center gap-2">
-                            <Checkbox id="holiday" />
+                            
                             <Label className="leading-none" htmlFor="holiday">
                                 Feriado
                             </Label>
+                            <Input className="" id="holiday" required type="number" />
                         </div>
                         <div className="flex items-center gap-2">
-                            <Checkbox id="mechanical-bull" />
+
                             <Label className="leading-none" htmlFor="mechanical-bull">
-                                Touro Mecanico
+                                Touro Mecânico
                             </Label>
+                            <Input className="" id="mechanical-bull" required type="number" />
                         </div>
                         <div className="flex items-center gap-2">
-                            <Checkbox id="photos" />
+                            
                             <Label className="leading-none" htmlFor="photos">
-                                Cabine Fotos
+                                Cabine de Fotos
                             </Label>
+                            <Input className="" id="photos" required type="number" />
+
                         </div>
+                       
                         <div className="flex items-center gap-2">
-                            <Checkbox id="waiter" />
+                            
                             <Label className="leading-none" htmlFor="waiter">
                                 Garçom
                             </Label>
+                            <Input className="" id="waiter" required type="number" />
+
                         </div>
                         <div className="flex items-center gap-2">
-                            <Checkbox id="dj" />
+                        
                             <Label className="leading-none" htmlFor="dj">
                                 DJ
                             </Label>
+                            <Input className="" id="dj" required type="number" />
+
                         </div>
                         <div className="flex items-center gap-2">
-                            <Checkbox id="air-conditioning" />
+
                             <Label className="leading-none" htmlFor="air-conditioning">
                                 Climatização
                             </Label>
+                            <Input className="" id="air-conditioning" required type="number" />
+                            
                         </div>
                         <div className="flex items-center gap-2">
-                            <Checkbox id="barbecue-grill" />
+
                             <Label className="leading-none" htmlFor="barbecue-grill">
                                 Churrasqueira
                             </Label>
+                            <Input className="" id="barbecue-grill" required type="number" />
+
                         </div>
                         <div className="flex items-center gap-2">
-                            <Checkbox id="big-screen" />
+
                             <Label className="leading-none" htmlFor="big-screen">
                                 Telão
                             </Label>
+                            <Input className="" id="big-screen" required type="number" />
+
                         </div>
                         <div className="flex items-center gap-2">
-                            <Checkbox id="electricity-fee" />
+
                             <Label className="leading-none" htmlFor="electricity-fee">
                                 Taxa de Luz
                             </Label>
+                            <Input className="" id="electricity-fee" required type="number" />
                         </div>
+                     
                         
                     </div>
+
+                    <div className="  grid grid-cols-2 gap-2 bg-white rounded-lg border border-gray-200 text-black">
+                            <div className="mx-auto">
+                                <h2 className="text-center text-xl font-semibold">Valores</h2>
+                                <ul className="text-sm list-disc">
+                                    <li className="my-1">Touro mecânico: <strong>R$ 120,00</strong> (1h)</li>
+                                    <li className="my-1">Cabine de fotos: <strong>R$ 200,00</strong> (1h)</li>
+                                    <li className="my-1">Garçom e/ou copeira: <strong>R$ 140,00</strong> (4h)</li>
+                                    <li className="my-1">Dj com pista completa: <strong>R$ 600,00</strong> (4h)</li>
+                                    <li className="my-1">Climatização: <strong>R$ 120,00</strong> (4h)</li>
+                                    <li className="my-1">Churrasqueira: <strong>R$ 150,00</strong> (4h)</li>
+                                    <li className="my-1">Telão: <strong>R$ 180,00</strong> (4h)</li>
+                                    <li className="my-1">Taxa de luz:<strong> R$ 70,00</strong> (4h)</li>
+                                </ul>
+                            </div>    
+                            <div className="mx-auto">
+                                <h2 className="text-center text-xl font-semibold">Horas Extras</h2>
+                                <ul className="text-sm list-disc">
+                                    <li className="my-1">Salão: <strong>R$ 180,00</strong></li>
+                                    <li className="my-1">Monitores: <strong>R$ 25,00</strong></li>
+                                    <li className="my-1">Garçom e/ou copeira: <strong>R$ 35,00</strong></li>
+                                    <li className="my-1">Climatização: <strong>R$ 30,00</strong></li>
+                                    <li className="my-1">Dj: <strong>R$ 150,00</strong></li>
+                                    <li className="my-1">Telão: <strong>R$ 45,00</strong></li>
+                                </ul>
+                                </div> 
+                        </div>
+                       
+                    
                     <div className="space-y-2">
                         <Label htmlFor="buffet-price">Valor Buffet</Label>
                         <Input id="buffet-price" placeholder="Entre com valor do buffet R$" />
+                    </div>
+                    <div className="space-y-2 ">
+                        <p>Observação:</p>
+                        <textarea placeholder="Digite aqui." className="w-full rounded-md shadow-sm border p-1 border-gray-200"/>
                     </div>
                     <div className="space-y-2">
                         <Label htmlFor="suggested-price">Preço sugerido Pelo sistema</Label>
