@@ -1,22 +1,22 @@
 import z from 'zod'
 
 export const scheduleSchema = z.object({
+    nomeCliente: z.string(),
+    numeroCelular: z.string(),
     data: z.string().transform((str) => new Date(str)),
-    nome_cliente: z.string(),
-    numero_celular: z.string(),
-    hora_inicio: z.string(),
-    hora_fim: z.string(),
+    horaInicio: z.string(),
+    horaFim: z.string(),
     feriado: z.boolean(),
-    touro_mecanico: z.boolean(),
-    fotos: z.boolean(),
-    garcom: z.boolean(),
-    dj: z.boolean(),
-    climatizacao: z.boolean(),
-    churrasqueira: z.boolean(),
-    telao: z.boolean(),
-    taxa_luz: z.boolean(),
-    buffet: z.boolean(),
-    valor_buffet: z.string(),
-    valor_sugerido: z.number(),
-    valor_cobrado: z.number()
+    touroMecanico: z.string().transform((str) => parseInt(str)),//hora
+    fotos: z.string().transform((str) => parseInt(str)),//hora
+    garcom: z.string().transform((str) => parseInt(str)),
+    dj: z.string().transform((str) => parseInt(str)),
+    climatizacao: z.string().transform((str) => parseInt(str)),
+    churrasqueira: z.string().transform((str) => parseInt(str)),
+    telao: z.string().transform((str) => parseInt(str)),
+    taxaLuz: z.string().transform((str) => parseInt(str)),
+    valorBuffet: z.string().transform((str) => parseFloat(str)),
+    observacao: z.string(),
+    valorSugerido: z.number(),
+    valorCobrado: z.number()
 })

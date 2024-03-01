@@ -31,7 +31,7 @@ const valideFormSchema = z.object({
         return numPhotos >= 1; // Validando se o número de fotos é pelo menos 4
     }, { message: 'O número mínimo de horas é 1h' }),
     photos: z.string().optional().refine(value => {
-        if (!value) return true; // Permitindo valor vazio ou ausente
+        if (!value) return true; // Permitindo valor vazio ou ausente-m 
         const numPhotos = parseInt(value, 10); // Convertendo a string para um número
         return numPhotos >= 1; // Validando se o número de fotos é pelo menos 4
     }, { message: 'O número mínimo de horas é 1h' }) ,
