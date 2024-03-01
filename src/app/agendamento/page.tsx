@@ -14,28 +14,28 @@ import { TypeOf, z } from "zod"
 import {zodResolver} from "@hookform/resolvers/zod"
 
 const valideFormSchema = z.object({
-    name: z.string()
+    nomeCliente: z.string()
         .transform(name => {
             return name.trim().split(' ').map(word => {
                 return word[0].toLocaleUpperCase().concat(word.substring(1))
             }).join(' ')
         }),
-    phone: z.string().optional(),
-    date: z.string(),
-    startTime: z.string(),
-    endTime: z.string(),
-    holiday: z.boolean().optional(),
-    mechanicalBull: z.string().optional().refine(value => {
+    numeroCliente: z.string().optional(),
+    data: z.string(),
+    horaInicio: z.string(),
+    horaFim: z.string(),
+    feriado: z.boolean(),
+    touroMecanico: z.string().optional().refine(value => {
         if (!value) return true; // Permitindo valor vazio ou ausente
         const numPhotos = parseInt(value, 10); // Convertendo a string para um número
         return numPhotos >= 1; // Validando se o número de fotos é pelo menos 4
     }, { message: 'O número mínimo de horas é 1h' }),
-    photos: z.string().optional().refine(value => {
+    fotos: z.string().optional().refine(value => {
         if (!value) return true; // Permitindo valor vazio ou ausente-m 
         const numPhotos = parseInt(value, 10); // Convertendo a string para um número
         return numPhotos >= 1; // Validando se o número de fotos é pelo menos 4
     }, { message: 'O número mínimo de horas é 1h' }) ,
-    waiter: z.string().optional().refine(value => {
+    garcom: z.string().optional().refine(value => {
         if (!value) return true; // Permitindo valor vazio ou ausente
         const numPhotos = parseInt(value, 10); // Convertendo a string para um número
         return numPhotos >= 4; // Validando se o número de fotos é pelo menos 4
@@ -45,26 +45,34 @@ const valideFormSchema = z.object({
         const numPhotos = parseInt(value, 10); // Convertendo a string para um número
         return numPhotos >= 4; // Validando se o número de fotos é pelo menos 4
     }, { message: 'O número mínimo de horas é 4h' }),
-    airConditioning: z.string().optional().refine(value => {
+    climatizacao: z.string().optional().refine(value => {
         if (!value) return true; // Permitindo valor vazio ou ausente
         const numPhotos = parseInt(value, 10); // Convertendo a string para um número
         return numPhotos >= 4; // Validando se o número de fotos é pelo menos 4
     }, { message: 'O número mínimo de horas é 4h' }),
-    barbecueGrill: z.string().optional().refine(value => {
+    churrasqueira: z.string().optional().refine(value => {
         if (!value) return true; // Permitindo valor vazio ou ausente
         const numPhotos = parseInt(value, 10); // Convertendo a string para um número
         return numPhotos >= 4; // Validando se o número de fotos é pelo menos 4
     }, { message: 'O número mínimo de horas é 4h' }),
-    bigScreen:z.string().optional().refine(value => {
+    telao:z.string().optional().refine(value => {
         if (!value) return true; // Permitindo valor vazio ou ausente
         const numPhotos = parseInt(value, 10); // Convertendo a string para um número
         return numPhotos >= 4; // Validando se o número de fotos é pelo menos 4
     }, { message: 'O número mínimo de horas é 4h' }),
-    electricityFee: z.string().optional().refine(value => {
+    taxaLuz: z.string().optional().refine(value => {
         if (!value) return true; // Permitindo valor vazio ou ausente
         const numPhotos = parseInt(value, 10); // Convertendo a string para um número
         return numPhotos >= 4; // Validando se o número de fotos é pelo menos 4
     }, { message: 'O número mínimo de horas é 4h' }),
+    buffet:z.string().optional(),
+    valorBuffet:z.string().optional(),
+    observacao: z.string().optional(),
+    valorSugerido:z.string().optional(),
+    valorCobrado:z.string().optional(),
+    
+
+
 })
 
 type TypeValideFormSchema = z.infer<typeof valideFormSchema>
@@ -98,41 +106,42 @@ export default function Component() {
                 <div className="space-y-6">
                     <div className="grid grid-cols-2 gap-6">
                         <div className="space-y-2">
-                            <Label htmlFor="name">Nome</Label>
-                            <Input id="name" placeholder="Nome do cliente" required type="text"
-                            {...register('name')}   
+                            <Label htmlFor="nomeCliente">Nome</Label>
+                            <Input id="nomeCliente" placeholder="Nome do cliente" required type="text"
+                            {...register('nomeCliente')}   
                             />
                         </div>
                         <div className="space-y-2">
-                            <Label htmlFor="phone">Numero do celular</Label>
-                            <Input id="phone" placeholder="Telefone do cliente"  type="tel"
-                            {...register('phone')}   
+                            <Label htmlFor="numeroCliente">Numero do celular</Label>
+                            <Input id="numeroCliente" placeholder="Telefone do cliente"  type="tel"
+                            {...register('numeroCliente')}   
                             />
                         </div>
                     </div>
                     <div className="grid grid-cols-4 gap-10">
                         <div className="space-y-2">
-                            <Label htmlFor="date">Dia</Label>
-                            <Input id="date"  type="date"
-                            {...register('date')}   
+                            <Label htmlFor="data">Dia</Label>
+                            <Input id="data"  type="date"
+                            {...register('data')}   
                             />
                         </div>
                         <div className="">  
                         <Label className="leading-none text-nowrap" htmlFor="holiday">
                                 Feriado/Fim de semana
                         </Label>
-                        <Input className=" w-7" id="holiday" type="checkbox" {...register('holiday')} />
+                        <Input className=" w-7" id="feriado" type="checkbox"
+                         {...register('feriado')} />
                         </div>
                         <div className="space-y-2">
-                            <Label htmlFor="startTime">Horario de Inicio</Label>
-                            <Input id="startTime"  type="time" 
-                            {...register('startTime')}   
+                            <Label htmlFor="horaInicio">Horario de Inicio</Label>
+                            <Input id="horaInicio"  type="time" 
+                            {...register('horaInicio')}   
                             />
                         </div>
                         <div className="space-y-2">
-                            <Label htmlFor="endTime">Horario Fim</Label>
-                            <Input id="endTime"  type="time"
-                            {...register('endTime')}   
+                            <Label htmlFor="horaFim">Horario Fim</Label>
+                            <Input id="horaFim"  type="time"
+                            {...register('horaFim')}   
                             />
                         </div>
                     </div>
@@ -141,36 +150,36 @@ export default function Component() {
                        
                         <div className="flex items-center gap-2">
 
-                            <Label className="leading-none" htmlFor="mechanicalBull">
+                            <Label className="leading-none" htmlFor="touroMecanico">
                                 Touro Mecânico
                             </Label>
-                            <Input className="" id="mechanicalBull"  type="number"
-                            {...register('mechanicalBull')}   
+                            <Input className="" id="touroMecanico"  type="number"
+                            {...register('touroMecanico')}   
                             />
-                            {errors.mechanicalBull && <span>{errors.mechanicalBull.message}</span>}
+                            {errors.touroMecanico && <span>{errors.touroMecanico.message}</span>}
 
                         </div>
                         <div className="flex items-center gap-2">
                             
-                            <Label className="leading-none" htmlFor="photos">
+                            <Label className="leading-none" htmlFor="fotos">
                                 Cabine de Fotos
                             </Label>
-                            <Input className="" id="photos"  type="number" 
-                            {...register('photos')}
+                            <Input className="" id="fotos"  type="number" 
+                            {...register('fotos')}
                               
                             />
-                            {errors.photos && <span>{errors.photos.message}</span>}
+                            {errors.fotos && <span>{errors.fotos.message}</span>}
                         </div>
                        
                         <div className="flex items-center gap-2">
                             
-                            <Label className="leading-none" htmlFor="waiter">
+                            <Label className="leading-none" htmlFor="garcom">
                                 Garçom
                             </Label>
-                            <Input className="" id="waiter"  type="number" 
-                            {...register('waiter')}   
+                            <Input className="" id="garcom"  type="number" 
+                            {...register('garcom')}   
                             />
-                            {errors.waiter && <span>{errors.waiter.message}</span>}
+                            {errors.garcom && <span>{errors.garcom.message}</span>}
                         </div>
                         <div className="flex items-center gap-2">
                         
@@ -185,46 +194,46 @@ export default function Component() {
                         </div>
                         <div className="flex items-center gap-2">
 
-                            <Label className="leading-none" htmlFor="airConditioning">
+                            <Label className="leading-none" htmlFor="climatizacao">
                                 Climatização
                             </Label>
-                            <Input className="" id="airConditioning"  type="number"
-                            {...register('airConditioning')}   
+                            <Input className="" id="climatizacao"  type="number"
+                            {...register('climatizacao')}   
                             />
-                            {errors.airConditioning && <span>{errors.airConditioning.message}</span>}
+                            {errors.climatizacao && <span>{errors.climatizacao.message}</span>}
                             
                         </div>
                         <div className="flex items-center gap-2">
 
-                            <Label className="leading-none" htmlFor="barbecueGrill">
+                            <Label className="leading-none" htmlFor="churrasqueira">
                                 Churrasqueira
                             </Label>
-                            <Input className="" id="barbecueGrill"  type="number" 
-                            {...register('barbecueGrill')}   
+                            <Input className="" id="churrasqueira"  type="number" 
+                            {...register('churrasqueira')}   
                             />
-                            {errors.barbecueGrill && <span>{errors.barbecueGrill.message}</span>}
+                            {errors.churrasqueira && <span>{errors.churrasqueira.message}</span>}
 
                         </div>
                         <div className="flex items-center gap-2">
 
-                            <Label className="leading-none" htmlFor="bigScreen">
+                            <Label className="leading-none" htmlFor="telao">
                                 Telão
                             </Label>
-                            <Input className="" id="bigScreen"  type="number" 
-                            {...register('bigScreen')}   
+                            <Input className="" id="telao"  type="number" 
+                            {...register('telao')}   
                             />
-                            {errors.bigScreen && <span>{errors.bigScreen.message}</span>}
+                            {errors.telao && <span>{errors.telao.message}</span>}
 
                         </div>
                         <div className="flex items-center gap-2">
 
-                            <Label className="leading-none" htmlFor="electricityFee">
+                            <Label className="leading-none" htmlFor="taxaLuz">
                                 Taxa de Luz
                             </Label>
-                            <Input className="" id="electricityFee"  type="number" 
-                            {...register('electricityFee')}   
+                            <Input className="" id="taxaLuz"  type="number" 
+                            {...register('taxaLuz')}   
                             />
-                            {errors.electricityFee && <span>{errors.electricityFee.message}</span>}
+                            {errors.taxaLuz && <span>{errors.taxaLuz.message}</span>}
 
                         </div>
                      
@@ -260,25 +269,29 @@ export default function Component() {
                        
                     
                     <div className="space-y-2">
-                        <Label htmlFor="buffetPrice">Valor Buffet</Label>
-                        <Input id="buffetPrice" placeholder="Entre com valor do buffet R$" 
-                            
+                        <Label htmlFor="valorBuffet">Valor Buffet</Label>
+                        <Input id="valorBuffet" placeholder="Entre com valor do buffet R$" 
+                            {...register('valorBuffet')}
+                        
                         />
                     </div>
                     <div className="space-y-2 ">
                         <p>Observação:</p>
-                        <textarea placeholder="Digite aqui." className="w-full rounded-md shadow-sm border p-1 border-gray-200"/>
+                        <textarea id="observacao" placeholder="Digite aqui." className="w-full rounded-md shadow-sm border p-1 border-gray-200"
+                            {...register('observacao')}
+                            />
+                    
                     </div>
                     <div className="space-y-2">
-                        <Label htmlFor="suggestedPrice">Preço sugerido Pelo sistema</Label>
-                        <Input id="suggestedPrice" placeholder="" disabled 
-                          
+                        <Label htmlFor="valorSugerido">Preço sugerido Pelo sistema</Label>
+                        <Input id="valorSugerido" placeholder="" disabled 
+                            {...register('valorSugerido')}
                             />
                     </div>
                     <div className="space-y-2">
-                        <Label htmlFor="chargedPrice">Preço final cobrado</Label>
-                        <Input id="chargedPrice" placeholder="Insira o Preço que sera cobrado" 
-                            
+                        <Label htmlFor="valorCobrado">Preço final cobrado</Label>
+                        <Input id="valorCobrado" placeholder="Insira o Preço que sera cobrado" 
+                            {...register('valorCobrado')}
                             />
                     </div>
                     <Button  >Enviar</Button>
