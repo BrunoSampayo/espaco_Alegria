@@ -37,25 +37,24 @@ export async function POST(req: Request) {
         const valide = scheduleSchema.parse(data)
         const newSchedule = await prisma.schedule.create({
             data: {
-                nome_cliente: valide.nomeCliente,
-                numero_celular: valide.numeroCelular,
+                nome_cliente: valide.nome_cliente,
+                numero_celular: valide.numero_celular,
                 data: valide.data,
-                hora_inicio: valide.horaInicio,
-                hora_fim: valide.horaFim,
+                hora_inicio: valide.hora_inicio,
+                hora_fim: valide.hora_fim,
                 feriado: valide.feriado,
-                touro_mecanico: valide.touroMecanico,
+                touro_mecanico: valide.touro_mecanico,
                 fotos: valide.fotos,
                 garcom: valide.garcom,
                 dj: valide.dj,
                 climatizacao: valide.climatizacao,
                 churrasqueira: valide.churrasqueira,
                 telao: valide.telao,
-                taxa_luz: valide.taxaLuz,
-                valor_buffet: valide.valorBuffet,
-                observacao: valide.observacao,
-                valor_sugerido: valide.valorSugerido,
-                valor_cobrado: valide.valorCobrado
-
+                taxa_luz: valide.taxa_luz,
+                observacao:valide.observacao,
+                valor_cobrado:valide.valor_cobrado,
+                valor_sugerido:valide.valor_sugerido,
+                valor_buffet:valide.valor_buffet
             }
 
         })
