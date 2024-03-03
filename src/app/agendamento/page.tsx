@@ -31,21 +31,28 @@ export default function Component() {
 
     function createUser(data: any){
         
-        const dataValue =  setOutPut(JSON.stringify(data,null,2));
+          setOutPut(data);
     
     }
-    useEffect(()=>{
+    useEffect(() => {
         async function teste() {
-            const response = await axios.post('/api/schedule', outPut,{headers: {
-                'Content-Type': 'application/json'
-            }});
-            return response
-        } 
-        const valorData = teste()
-        
-        console.log(valorData)
+            try {
+                const response = await axios.post('/api/schedule', outPut, {
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                console.log(response.data); // Aqui você pode ver a resposta no console
+                return response.data;
+            } catch (error) {
+                console.error('Erro ao enviar requisição:', error);
+                return null; // ou outra manipulação de erro adequada
+            }
+        }
     
-    },[outPut]);
+        teste(); // Chame a função dentro do useEffect
+    
+    }, [outPut]);
     
     return (
         <div className="h-\[calc\(100\%\-8rem\)\] ">
@@ -253,8 +260,8 @@ export default function Component() {
                     </div>
                     <div className="space-y-2">
                         <Label htmlFor=" valor_sugerido">Preço sugerido Pelo sistema</Label>
-                        <Input id=" valor_sugerido" placeholder="" disabled 
-                            {...register('valor_sugerido')}
+                        <Input id=" valor_sugerido" placeholder=""  
+                            {...register('valor_sugerido', { required: false })}
                             />
                     </div>
                     <div className="space-y-2">
@@ -267,7 +274,7 @@ export default function Component() {
                 </div>
                 </form>
                 
-                <pre>{outPut}</pre>
+                <pre>{JSON.stringify(outPut, null, 2)}</pre>
             </div>
         </div>
     )
