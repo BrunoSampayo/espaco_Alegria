@@ -8,12 +8,12 @@ export function CalendarDemo() {
   const [date, setDate] = React.useState<Date | undefined>(new Date())
 
   return (
-    <div className=" h-96 ">
+    <div className="">
  <Calendar
       mode="single"
       selected={date}
       onSelect={setDate}
-      className="rounded-md border shadow bg-zinc-200 bg-opacity-15  "
+      className="rounded-md border shadow bg-slate-100 bg-opacity-90  "
       
     />
     </div>
