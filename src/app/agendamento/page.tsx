@@ -114,10 +114,10 @@ export default function Component() {
                                 Touro Mecânico
                             </Label>
                             
-                            <Input className="w-14 text-nowrap" id="touro_mecanico"  type="number"
+                            <Input className="" id="touro_mecanico"  type="number"
                             {...register('touro_mecanico')}   
                             /></div>   
-                             {errors.touro_mecanico && <span className=" text-xs p-1 bg-white border border-red-300 rounded-md ">{errors.touro_mecanico.message}</span>}                 
+                             {errors.touro_mecanico && <span className="text-wrap text-xs p-1 bg-white border border-red-300 rounded-md ">{errors.touro_mecanico.message}</span>}                 
                         
                         </div>
 
@@ -127,11 +127,11 @@ export default function Component() {
                             <Label className="leading-none" htmlFor="fotos">
                                 Cabine de fotos
                             </Label>
-                            <Input className="w-14 text-nowrap" id="fotos"  type="number" 
+                            <Input className="" id="fotos"  type="number" 
                             {...register('fotos')}
                               
                             /></div>
-                             {errors.fotos && <span className=" text-xs p-1 bg-white border border-red-300 rounded-md ">{errors.fotos.message}</span>}
+                             {errors.fotos && <span className="text-wrap text-xs p-1 bg-white border border-red-300 rounded-md ">{errors.fotos.message}</span>}
                         </div>
 
                         <div>
@@ -140,10 +140,10 @@ export default function Component() {
                             <Label className="leading-none" htmlFor="garcom">
                                 Garçom
                             </Label>
-                            <Input className="w-14 " id="garcom"  type="number" 
+                            <Input className="" id="garcom"  type="number" 
                             {...register('garcom')}   
                             /></div>
-                             {errors.garcom && <span className=" text-xs p-1 bg-white border border-red-300 rounded-md ">{errors.garcom.message}</span>}
+                             {errors.garcom && <span className="text-wrap text-xs p-1 bg-white border border-red-300 rounded-md ">{errors.garcom.message}</span>}
                         </div>
                         
                         <div>
@@ -152,10 +152,10 @@ export default function Component() {
                             <Label className="leading-none" htmlFor="dj">
                                 DJ
                             </Label>
-                            <Input className="w-14 " id="dj"  type="number" 
+                            <Input className="" id="dj"  type="number" 
                             {...register('dj')}   
                             /></div>
-                             {errors.dj && <span className=" text-xs p-1 bg-white border border-red-300 rounded-md ">{errors.dj.message}</span>}
+                             {errors.dj && <span className="text-wrap text-xs p-1 bg-white border border-red-300 rounded-md ">{errors.dj.message}</span>}
 
                         </div>
 
@@ -165,10 +165,10 @@ export default function Component() {
                             <Label className="leading-none" htmlFor="climatizacao">
                                 Climatização
                             </Label>
-                            <Input className="w-14 " id="climatizacao"  type="number"
+                            <Input className="" id="climatizacao"  type="number"
                             {...register('climatizacao')}   
                             /></div>
-                             {errors.climatizacao && <span className=" text-xs p-1 bg-white border border-red-300 rounded-md ">{errors.climatizacao.message}</span>}
+                             {errors.climatizacao && <span className="text-wrap text-xs p-1 bg-white border border-red-300 rounded-md ">{errors.climatizacao.message}</span>}
                             
                         </div>
                         
@@ -178,10 +178,10 @@ export default function Component() {
                             <Label className="leading-none" htmlFor="churrasqueira">
                                 Churrasqueira
                             </Label>
-                            <Input className="w-14 " id="churrasqueira"  type="number" 
+                            <Input className="" id="churrasqueira"  type="number" 
                             {...register('churrasqueira')}   
                             /></div>
-                             {errors.churrasqueira && <span className=" text-xs p-1 bg-white border border-red-300 rounded-md ">{errors.churrasqueira.message}</span>}
+                             {errors.churrasqueira && <span className="text-wrap text-xs p-1 bg-white border border-red-300 rounded-md ">{errors.churrasqueira.message}</span>}
 
                         </div>
 
@@ -191,10 +191,10 @@ export default function Component() {
                             <Label className="leading-none" htmlFor="telao">
                                 Telão
                             </Label>
-                            <Input className="w-14 " id="telao"  type="number" 
+                            <Input className="" id="telao"  type="number" 
                             {...register('telao')}   
                             /></div>
-                             {errors.telao && <span className=" text-xs p-1 bg-white border border-red-300 rounded-md ">{errors.telao.message}</span>}
+                             {errors.telao && <span className="text-wrap text-xs p-1 bg-white border border-red-300 rounded-md ">{errors.telao.message}</span>}
 
                         </div>
 
@@ -204,10 +204,10 @@ export default function Component() {
                             <Label className="leading-none" htmlFor="taxa_luz">
                                 Taxa de Luz
                             </Label>
-                            <Input className="w-14" id="taxa_luz"  type="number" 
+                            <Input className="" id="taxa_luz"  type="number" 
                             {...register('taxa_luz')}   
                             /></div>
-                             {errors.taxa_luz && <span className=" text-xs p-1 bg-white border border-red-300 rounded-md ">{errors.taxa_luz.message}</span>}
+                             {errors.taxa_luz && <span className="text-wrap text-xs p-1 bg-white border border-red-300 rounded-md ">{errors.taxa_luz.message}</span>}
 
                         </div>
                      
@@ -244,7 +244,7 @@ export default function Component() {
                     
                     <div className="space-y-2">
                         <Label htmlFor="valor_buffet">Valor Buffet</Label>
-                        <Input id="valor_buffet" placeholder="Entre com valor do buffet R$" type="text"
+                        <Input id="valor_buffet" placeholder="Entre com valor do buffet R$" type="string"
                             {...register('valor_buffet')}
                         
                         />
@@ -258,13 +258,13 @@ export default function Component() {
                     </div>
                     <div className="space-y-2">
                         <Label htmlFor=" valor_sugerido">Preço sugerido Pelo sistema</Label>
-                        <Input id=" valor_sugerido" placeholder=""  type="text"
+                        <Input id=" valor_sugerido" placeholder=""  type="string"
                             {...register('valor_sugerido', { required: false })}
                             />
                     </div>
                     <div className="space-y-2">
                         <Label htmlFor="valor_cobrado">Preço final cobrado</Label>
-                        <Input id="valor_cobrado" placeholder="Insira o Preço que sera cobrado" type="text"
+                        <Input id="valor_cobrado" placeholder="Insira o Preço que sera cobrado" type="string"
                             {...register('valor_cobrado')}
                             />
                     </div>
