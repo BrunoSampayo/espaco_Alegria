@@ -43,17 +43,13 @@ export default function Component() {
     }
 
     function createUser(data: any){
-        
         setOutPut(JSON.stringify(data, null, 2));
-        
         teste(data);
     }
-    useEffect(()=> { 
-    
+
+    useEffect(()=> {     
         //passar function teste
-            
         console.log('Rodou o effect')
-        
     },[outPut])
     
     return (
@@ -110,7 +106,7 @@ export default function Component() {
                         </div>
                     </div>
                     
-                    <div className="grid grid-cols-3 gap-4">
+                    <div className="grid grid-cols-4 gap-4">
                         <div>
                         <div className="flex items-center mb-1 gap-2">
 
@@ -118,7 +114,7 @@ export default function Component() {
                                 Touro Mecânico
                             </Label>
                             
-                            <Input className="" id="touro_mecanico"  type="number"
+                            <Input className="w-14 text-nowrap" id="touro_mecanico"  type="number"
                             {...register('touro_mecanico')}   
                             /></div>   
                              {errors.touro_mecanico && <span className=" text-xs p-1 bg-white border border-red-300 rounded-md ">{errors.touro_mecanico.message}</span>}                 
@@ -131,7 +127,7 @@ export default function Component() {
                             <Label className="leading-none" htmlFor="fotos">
                                 Cabine de fotos
                             </Label>
-                            <Input className="" id="fotos"  type="number" 
+                            <Input className="w-14 text-nowrap" id="fotos"  type="number" 
                             {...register('fotos')}
                               
                             /></div>
@@ -144,7 +140,7 @@ export default function Component() {
                             <Label className="leading-none" htmlFor="garcom">
                                 Garçom
                             </Label>
-                            <Input className="" id="garcom"  type="number" 
+                            <Input className="w-14 " id="garcom"  type="number" 
                             {...register('garcom')}   
                             /></div>
                              {errors.garcom && <span className=" text-xs p-1 bg-white border border-red-300 rounded-md ">{errors.garcom.message}</span>}
@@ -156,7 +152,7 @@ export default function Component() {
                             <Label className="leading-none" htmlFor="dj">
                                 DJ
                             </Label>
-                            <Input className="" id="dj"  type="number" 
+                            <Input className="w-14 " id="dj"  type="number" 
                             {...register('dj')}   
                             /></div>
                              {errors.dj && <span className=" text-xs p-1 bg-white border border-red-300 rounded-md ">{errors.dj.message}</span>}
@@ -169,7 +165,7 @@ export default function Component() {
                             <Label className="leading-none" htmlFor="climatizacao">
                                 Climatização
                             </Label>
-                            <Input className="" id="climatizacao"  type="number"
+                            <Input className="w-14 " id="climatizacao"  type="number"
                             {...register('climatizacao')}   
                             /></div>
                              {errors.climatizacao && <span className=" text-xs p-1 bg-white border border-red-300 rounded-md ">{errors.climatizacao.message}</span>}
@@ -182,7 +178,7 @@ export default function Component() {
                             <Label className="leading-none" htmlFor="churrasqueira">
                                 Churrasqueira
                             </Label>
-                            <Input className="" id="churrasqueira"  type="number" 
+                            <Input className="w-14 " id="churrasqueira"  type="number" 
                             {...register('churrasqueira')}   
                             /></div>
                              {errors.churrasqueira && <span className=" text-xs p-1 bg-white border border-red-300 rounded-md ">{errors.churrasqueira.message}</span>}
@@ -195,7 +191,7 @@ export default function Component() {
                             <Label className="leading-none" htmlFor="telao">
                                 Telão
                             </Label>
-                            <Input className="" id="telao"  type="number" 
+                            <Input className="w-14 " id="telao"  type="number" 
                             {...register('telao')}   
                             /></div>
                              {errors.telao && <span className=" text-xs p-1 bg-white border border-red-300 rounded-md ">{errors.telao.message}</span>}
@@ -208,7 +204,7 @@ export default function Component() {
                             <Label className="leading-none" htmlFor="taxa_luz">
                                 Taxa de Luz
                             </Label>
-                            <Input className="" id="taxa_luz"  type="number" 
+                            <Input className="w-14" id="taxa_luz"  type="number" 
                             {...register('taxa_luz')}   
                             /></div>
                              {errors.taxa_luz && <span className=" text-xs p-1 bg-white border border-red-300 rounded-md ">{errors.taxa_luz.message}</span>}
@@ -248,7 +244,7 @@ export default function Component() {
                     
                     <div className="space-y-2">
                         <Label htmlFor="valor_buffet">Valor Buffet</Label>
-                        <Input id="valor_buffet" placeholder="Entre com valor do buffet R$" type="string"
+                        <Input id="valor_buffet" placeholder="Entre com valor do buffet R$" type="text"
                             {...register('valor_buffet')}
                         
                         />
@@ -262,13 +258,13 @@ export default function Component() {
                     </div>
                     <div className="space-y-2">
                         <Label htmlFor=" valor_sugerido">Preço sugerido Pelo sistema</Label>
-                        <Input id=" valor_sugerido" placeholder=""  type="string"
+                        <Input id=" valor_sugerido" placeholder=""  type="text"
                             {...register('valor_sugerido', { required: false })}
                             />
                     </div>
                     <div className="space-y-2">
                         <Label htmlFor="valor_cobrado">Preço final cobrado</Label>
-                        <Input id="valor_cobrado" placeholder="Insira o Preço que sera cobrado" type="string"
+                        <Input id="valor_cobrado" placeholder="Insira o Preço que sera cobrado" type="text"
                             {...register('valor_cobrado')}
                             />
                     </div>
