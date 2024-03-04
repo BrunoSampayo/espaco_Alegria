@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button"
 import { useForm } from "react-hook-form"
 import { useEffect } from "react"
 import { useState } from "react"
-import { TypeOf, z } from "zod"
+import {  z } from "zod"
 import {zodResolver} from "@hookform/resolvers/zod"
 import { valideFormSchema } from "@/lib/schema"
 import axios, {isCancel, AxiosError} from 'axios';
@@ -27,32 +27,34 @@ export default function Component() {
         resolver: zodResolver(valideFormSchema),
     });
     
-   
+    async function teste(data: any) {
+        if (!data.valor_sugerido) {
+            data.valor_sugerido = 'teste do campo'; // Valor padrão sugerido pelo banco de dados
+        }
+        try{  
+            const response = await axios.post('/api/schedule', data, {headers: 
+                {'Content-Type': 'application/json'}});
+                
+            console.log('Resposta da API:', response.data);
+        }
+        catch(error){
+            console.error('Erro ao enviar requisição:', error);
+        }
+    }
 
     function createUser(data: any){
         
-          setOutPut(data);
-    
+        setOutPut(JSON.stringify(data, null, 2));
+        
+        teste(data);
     }
-    useEffect(() => {
-        async function teste() {
-            try {
-                const response = await axios.post('/api/schedule', outPut, {
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                });
-                console.log(response.data); // Aqui você pode ver a resposta no console
-                return response.data;
-            } catch (error) {
-                console.error('Erro ao enviar requisição:', error);
-                return null; // ou outra manipulação de erro adequada
-            }
-        }
+    useEffect(()=> { 
     
-        teste(); // Chame a função dentro do useEffect
-    
-    }, [outPut]);
+        //passar function teste
+            
+        console.log('Rodou o effect')
+        
+    },[outPut])
     
     return (
         <div className="h-\[calc\(100\%\-8rem\)\] ">
@@ -119,7 +121,7 @@ export default function Component() {
                             <Input className="" id="touro_mecanico"  type="number"
                             {...register('touro_mecanico')}   
                             /></div>   
-                            {errors.touro_mecanico && <span className=" text-xs p-1 bg-white border border-red-300 rounded-md ">{errors.touro_mecanico.message}</span>}                 
+                             {errors.touro_mecanico && <span className=" text-xs p-1 bg-white border border-red-300 rounded-md ">{errors.touro_mecanico.message}</span>}                 
                         
                         </div>
 
@@ -133,7 +135,7 @@ export default function Component() {
                             {...register('fotos')}
                               
                             /></div>
-                            {errors.fotos && <span className=" text-xs p-1 bg-white border border-red-300 rounded-md ">{errors.fotos.message}</span>}
+                             {errors.fotos && <span className=" text-xs p-1 bg-white border border-red-300 rounded-md ">{errors.fotos.message}</span>}
                         </div>
 
                         <div>
@@ -145,7 +147,7 @@ export default function Component() {
                             <Input className="" id="garcom"  type="number" 
                             {...register('garcom')}   
                             /></div>
-                            {errors.garcom && <span className=" text-xs p-1 bg-white border border-red-300 rounded-md ">{errors.garcom.message}</span>}
+                             {errors.garcom && <span className=" text-xs p-1 bg-white border border-red-300 rounded-md ">{errors.garcom.message}</span>}
                         </div>
                         
                         <div>
@@ -157,7 +159,7 @@ export default function Component() {
                             <Input className="" id="dj"  type="number" 
                             {...register('dj')}   
                             /></div>
-                            {errors.dj && <span className=" text-xs p-1 bg-white border border-red-300 rounded-md ">{errors.dj.message}</span>}
+                             {errors.dj && <span className=" text-xs p-1 bg-white border border-red-300 rounded-md ">{errors.dj.message}</span>}
 
                         </div>
 
@@ -170,7 +172,7 @@ export default function Component() {
                             <Input className="" id="climatizacao"  type="number"
                             {...register('climatizacao')}   
                             /></div>
-                            {errors.climatizacao && <span className=" text-xs p-1 bg-white border border-red-300 rounded-md ">{errors.climatizacao.message}</span>}
+                             {errors.climatizacao && <span className=" text-xs p-1 bg-white border border-red-300 rounded-md ">{errors.climatizacao.message}</span>}
                             
                         </div>
                         
@@ -183,7 +185,7 @@ export default function Component() {
                             <Input className="" id="churrasqueira"  type="number" 
                             {...register('churrasqueira')}   
                             /></div>
-                            {errors.churrasqueira && <span className=" text-xs p-1 bg-white border border-red-300 rounded-md ">{errors.churrasqueira.message}</span>}
+                             {errors.churrasqueira && <span className=" text-xs p-1 bg-white border border-red-300 rounded-md ">{errors.churrasqueira.message}</span>}
 
                         </div>
 
@@ -196,7 +198,7 @@ export default function Component() {
                             <Input className="" id="telao"  type="number" 
                             {...register('telao')}   
                             /></div>
-                            {errors.telao && <span className=" text-xs p-1 bg-white border border-red-300 rounded-md ">{errors.telao.message}</span>}
+                             {errors.telao && <span className=" text-xs p-1 bg-white border border-red-300 rounded-md ">{errors.telao.message}</span>}
 
                         </div>
 
@@ -209,7 +211,7 @@ export default function Component() {
                             <Input className="" id="taxa_luz"  type="number" 
                             {...register('taxa_luz')}   
                             /></div>
-                            {errors.taxa_luz && <span className=" text-xs p-1 bg-white border border-red-300 rounded-md ">{errors.taxa_luz.message}</span>}
+                             {errors.taxa_luz && <span className=" text-xs p-1 bg-white border border-red-300 rounded-md ">{errors.taxa_luz.message}</span>}
 
                         </div>
                      
@@ -246,7 +248,7 @@ export default function Component() {
                     
                     <div className="space-y-2">
                         <Label htmlFor="valor_buffet">Valor Buffet</Label>
-                        <Input id="valor_buffet" placeholder="Entre com valor do buffet R$" 
+                        <Input id="valor_buffet" placeholder="Entre com valor do buffet R$" type="string"
                             {...register('valor_buffet')}
                         
                         />
@@ -260,13 +262,13 @@ export default function Component() {
                     </div>
                     <div className="space-y-2">
                         <Label htmlFor=" valor_sugerido">Preço sugerido Pelo sistema</Label>
-                        <Input id=" valor_sugerido" placeholder=""  
+                        <Input id=" valor_sugerido" placeholder=""  type="string"
                             {...register('valor_sugerido', { required: false })}
                             />
                     </div>
                     <div className="space-y-2">
                         <Label htmlFor="valor_cobrado">Preço final cobrado</Label>
-                        <Input id="valor_cobrado" placeholder="Insira o Preço que sera cobrado" 
+                        <Input id="valor_cobrado" placeholder="Insira o Preço que sera cobrado" type="string"
                             {...register('valor_cobrado')}
                             />
                     </div>
@@ -274,7 +276,8 @@ export default function Component() {
                 </div>
                 </form>
                 
-                <pre>{JSON.stringify(outPut, null, 2)}</pre>
+                <pre className=" text-wrap">{outPut}</pre>
+           
             </div>
         </div>
     )

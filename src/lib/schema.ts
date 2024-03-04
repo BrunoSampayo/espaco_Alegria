@@ -76,7 +76,7 @@ export const valideFormSchema = z.object({
     
     valor_buffet:z.string().optional(),
     observacao: z.string().optional(),
-    valor_sugerido:z.string().optional(),
+    valor_sugerido:z.string().transform((str) => parseFloat(str)),
     valor_cobrado: z.string().optional(),
 
 })
