@@ -8,72 +8,13 @@ import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { useForm } from "react-hook-form"
-
+import { useEffect } from "react"
 import { useState } from "react"
-import { TypeOf, z } from "zod"
+import {  z } from "zod"
 import {zodResolver} from "@hookform/resolvers/zod"
+import { valideFormSchema } from "@/lib/schema"
+import axios, {isCancel, AxiosError} from 'axios';
 
-const valideFormSchema = z.object({
-    nomeCliente: z.string()
-        .transform(name => {
-            return name.trim().split(' ').map(word => {
-                return word[0].toLocaleUpperCase().concat(word.substring(1))
-            }).join(' ')
-        }),
-    numeroCliente: z.string().optional(),
-    data: z.string(),
-    horaInicio: z.string(),
-    horaFim: z.string(),
-    feriado: z.boolean(),
-    touroMecanico: z.string().optional().refine(value => {
-        if (!value) return true; // Permitindo valor vazio ou ausente
-        const numPhotos = parseInt(value, 10); // Convertendo a string para um número
-        return numPhotos >= 1; // Validando se o número de fotos é pelo menos 4
-    }, { message: 'O número mínimo de horas é 1h' }),
-    fotos: z.string().optional().refine(value => {
-        if (!value) return true; // Permitindo valor vazio ou ausente-m 
-        const numPhotos = parseInt(value, 10); // Convertendo a string para um número
-        return numPhotos >= 1; // Validando se o número de fotos é pelo menos 4
-    }, { message: 'O número mínimo de horas é 1h' }) ,
-    garcom: z.string().optional().refine(value => {
-        if (!value) return true; // Permitindo valor vazio ou ausente
-        const numPhotos = parseInt(value, 10); // Convertendo a string para um número
-        return numPhotos >= 4; // Validando se o número de fotos é pelo menos 4
-    }, { message: 'O número mínimo de horas é 4h' }),
-    dj: z.string().optional().refine(value => {
-        if (!value) return true; // Permitindo valor vazio ou ausente
-        const numPhotos = parseInt(value, 10); // Convertendo a string para um número
-        return numPhotos >= 4; // Validando se o número de fotos é pelo menos 4
-    }, { message: 'O número mínimo de horas é 4h' }),
-    climatizacao: z.string().optional().refine(value => {
-        if (!value) return true; // Permitindo valor vazio ou ausente
-        const numPhotos = parseInt(value, 10); // Convertendo a string para um número
-        return numPhotos >= 4; // Validando se o número de fotos é pelo menos 4
-    }, { message: 'O número mínimo de horas é 4h' }),
-    churrasqueira: z.string().optional().refine(value => {
-        if (!value) return true; // Permitindo valor vazio ou ausente
-        const numPhotos = parseInt(value, 10); // Convertendo a string para um número
-        return numPhotos >= 4; // Validando se o número de fotos é pelo menos 4
-    }, { message: 'O número mínimo de horas é 4h' }),
-    telao:z.string().optional().refine(value => {
-        if (!value) return true; // Permitindo valor vazio ou ausente
-        const numPhotos = parseInt(value, 10); // Convertendo a string para um número
-        return numPhotos >= 4; // Validando se o número de fotos é pelo menos 4
-    }, { message: 'O número mínimo de horas é 4h' }),
-    taxaLuz: z.string().optional().refine(value => {
-        if (!value) return true; // Permitindo valor vazio ou ausente
-        const numPhotos = parseInt(value, 10); // Convertendo a string para um número
-        return numPhotos >= 4; // Validando se o número de fotos é pelo menos 4
-    }, { message: 'O número mínimo de horas é 4h' }),
-    buffet:z.string().optional(),
-    valorBuffet:z.string().optional(),
-    observacao: z.string().optional(),
-    valorSugerido:z.string().optional(),
-    valorCobrado: z.string().optional(),
-    
-
-
-})
 
 type TypeValideFormSchema = z.infer<typeof valideFormSchema>
 
@@ -86,12 +27,35 @@ export default function Component() {
         resolver: zodResolver(valideFormSchema),
     });
     
-
-    function createUser(data: any){
-        setOutPut(JSON.stringify(data,null,2));
+    async function teste(data: any) {
+        if (!data.valor_sugerido) {
+            data.valor_sugerido = 'teste do campo'; // Valor padrão sugerido pelo banco de dados
+        }
+        try{  
+            const response = await axios.post('/api/schedule', data, {headers: 
+                {'Content-Type': 'application/json'}});
+                
+            console.log('Resposta da API:', response.data);
+        }
+        catch(error){
+            console.error('Erro ao enviar requisição:', error);
+        }
     }
 
-
+    function createUser(data: any){
+        
+        setOutPut(JSON.stringify(data, null, 2));
+        
+        teste(data);
+    }
+    useEffect(()=> { 
+    
+        //passar function teste
+            
+        console.log('Rodou o effect')
+        
+    },[outPut])
+    
     return (
         <div className="h-\[calc\(100\%\-8rem\)\] ">
             <div  className="mx-auto  max-w-3xl space-y-8 bg-slate-100 p-10 rounded-sm ">
@@ -106,15 +70,15 @@ export default function Component() {
                 <div className="space-y-6">
                     <div className="grid grid-cols-2 gap-6">
                         <div className="space-y-2">
-                            <Label htmlFor="nomeCliente">Nome</Label>
-                            <Input id="nomeCliente" placeholder="Nome do cliente" required type="text"
-                            {...register('nomeCliente')}   
+                            <Label htmlFor="nome_cliente">Nome</Label>
+                            <Input id="nome_cliente" placeholder="Nome do cliente" required type="text"
+                            {...register('nome_cliente')}   
                             />
                         </div>
                         <div className="space-y-2">
-                            <Label htmlFor="numeroCliente">Numero do celular</Label>
-                            <Input id="numeroCliente" placeholder="Telefone do cliente"  type="tel"
-                            {...register('numeroCliente')}   
+                            <Label htmlFor=" numero_celular">Numero do celular</Label>
+                            <Input id=" numero_celular" placeholder="Telefone do cliente"  type="tel"
+                            {...register('numero_celular')}   
                             />
                         </div>
                     </div>
@@ -126,22 +90,22 @@ export default function Component() {
                             />
                         </div>
                         <div className="">  
-                        <Label className="leading-none text-nowrap" htmlFor="holiday">
+                        <Label className="leading-none text-nowrap" htmlFor="feriado">
                                 Feriado/Fim de semana
                         </Label>
                         <Input className=" w-7" id="feriado" type="checkbox"
                          {...register('feriado')} />
                         </div>
                         <div className="space-y-2">
-                            <Label htmlFor="horaInicio">Horario de Inicio</Label>
-                            <Input id="horaInicio" required type="time" 
-                            {...register('horaInicio')}   
+                            <Label htmlFor="hora_inicio">Horario de Inicio</Label>
+                            <Input id="hora_inicio" required type="time" 
+                            {...register('hora_inicio')}   
                             />
                         </div>
                         <div className="space-y-2">
-                            <Label htmlFor="horaFim">Horario Fim</Label>
-                            <Input id="horaFim" required type="time"
-                            {...register('horaFim')}   
+                            <Label htmlFor="hora_fim">Horario Fim</Label>
+                            <Input id="hora_fim" required type="time"
+                            {...register('hora_fim')}   
                             />
                         </div>
                     </div>
@@ -150,14 +114,14 @@ export default function Component() {
                         <div>
                         <div className="flex items-center mb-1 gap-2">
 
-                            <Label className="leading-none" htmlFor="touroMecanico">
+                            <Label className="leading-none" htmlFor="touro_mecanico">
                                 Touro Mecânico
                             </Label>
                             
-                            <Input className="" id="touroMecanico"  type="number"
-                            {...register('touroMecanico')}   
+                            <Input className="" id="touro_mecanico"  type="number"
+                            {...register('touro_mecanico')}   
                             /></div>   
-                            {errors.touroMecanico && <span className=" text-xs p-1 bg-white border border-red-300 rounded-md ">{errors.touroMecanico.message}</span>}                 
+                             {errors.touro_mecanico && <span className=" text-xs p-1 bg-white border border-red-300 rounded-md ">{errors.touro_mecanico.message}</span>}                 
                         
                         </div>
 
@@ -165,13 +129,13 @@ export default function Component() {
                         <div className="flex items-center mb-1 gap-2">
                             
                             <Label className="leading-none" htmlFor="fotos">
-                                Cabine de Fotos
+                                Cabine de fotos
                             </Label>
                             <Input className="" id="fotos"  type="number" 
                             {...register('fotos')}
                               
                             /></div>
-                            {errors.fotos && <span className=" text-xs p-1 bg-white border border-red-300 rounded-md ">{errors.fotos.message}</span>}
+                             {errors.fotos && <span className=" text-xs p-1 bg-white border border-red-300 rounded-md ">{errors.fotos.message}</span>}
                         </div>
 
                         <div>
@@ -183,7 +147,7 @@ export default function Component() {
                             <Input className="" id="garcom"  type="number" 
                             {...register('garcom')}   
                             /></div>
-                            {errors.garcom && <span className=" text-xs p-1 bg-white border border-red-300 rounded-md ">{errors.garcom.message}</span>}
+                             {errors.garcom && <span className=" text-xs p-1 bg-white border border-red-300 rounded-md ">{errors.garcom.message}</span>}
                         </div>
                         
                         <div>
@@ -195,7 +159,7 @@ export default function Component() {
                             <Input className="" id="dj"  type="number" 
                             {...register('dj')}   
                             /></div>
-                            {errors.dj && <span className=" text-xs p-1 bg-white border border-red-300 rounded-md ">{errors.dj.message}</span>}
+                             {errors.dj && <span className=" text-xs p-1 bg-white border border-red-300 rounded-md ">{errors.dj.message}</span>}
 
                         </div>
 
@@ -208,7 +172,7 @@ export default function Component() {
                             <Input className="" id="climatizacao"  type="number"
                             {...register('climatizacao')}   
                             /></div>
-                            {errors.climatizacao && <span className=" text-xs p-1 bg-white border border-red-300 rounded-md ">{errors.climatizacao.message}</span>}
+                             {errors.climatizacao && <span className=" text-xs p-1 bg-white border border-red-300 rounded-md ">{errors.climatizacao.message}</span>}
                             
                         </div>
                         
@@ -221,7 +185,7 @@ export default function Component() {
                             <Input className="" id="churrasqueira"  type="number" 
                             {...register('churrasqueira')}   
                             /></div>
-                            {errors.churrasqueira && <span className=" text-xs p-1 bg-white border border-red-300 rounded-md ">{errors.churrasqueira.message}</span>}
+                             {errors.churrasqueira && <span className=" text-xs p-1 bg-white border border-red-300 rounded-md ">{errors.churrasqueira.message}</span>}
 
                         </div>
 
@@ -234,20 +198,20 @@ export default function Component() {
                             <Input className="" id="telao"  type="number" 
                             {...register('telao')}   
                             /></div>
-                            {errors.telao && <span className=" text-xs p-1 bg-white border border-red-300 rounded-md ">{errors.telao.message}</span>}
+                             {errors.telao && <span className=" text-xs p-1 bg-white border border-red-300 rounded-md ">{errors.telao.message}</span>}
 
                         </div>
 
                         <div>
                         <div className="flex items-center mb-1 gap-2">
 
-                            <Label className="leading-none" htmlFor="taxaLuz">
+                            <Label className="leading-none" htmlFor="taxa_luz">
                                 Taxa de Luz
                             </Label>
-                            <Input className="" id="taxaLuz"  type="number" 
-                            {...register('taxaLuz')}   
+                            <Input className="" id="taxa_luz"  type="number" 
+                            {...register('taxa_luz')}   
                             /></div>
-                            {errors.taxaLuz && <span className=" text-xs p-1 bg-white border border-red-300 rounded-md ">{errors.taxaLuz.message}</span>}
+                             {errors.taxa_luz && <span className=" text-xs p-1 bg-white border border-red-300 rounded-md ">{errors.taxa_luz.message}</span>}
 
                         </div>
                      
@@ -283,9 +247,9 @@ export default function Component() {
                        
                     
                     <div className="space-y-2">
-                        <Label htmlFor="valorBuffet">Valor Buffet</Label>
-                        <Input id="valorBuffet" placeholder="Entre com valor do buffet R$" 
-                            {...register('valorBuffet')}
+                        <Label htmlFor="valor_buffet">Valor Buffet</Label>
+                        <Input id="valor_buffet" placeholder="Entre com valor do buffet R$" type="string"
+                            {...register('valor_buffet')}
                         
                         />
                     </div>
@@ -297,21 +261,23 @@ export default function Component() {
                     
                     </div>
                     <div className="space-y-2">
-                        <Label htmlFor="valorSugerido">Preço sugerido Pelo sistema</Label>
-                        <Input id="valorSugerido" placeholder="" disabled 
-                            {...register('valorSugerido')}
+                        <Label htmlFor=" valor_sugerido">Preço sugerido Pelo sistema</Label>
+                        <Input id=" valor_sugerido" placeholder=""  type="string"
+                            {...register('valor_sugerido', { required: false })}
                             />
                     </div>
                     <div className="space-y-2">
-                        <Label htmlFor="valorCobrado">Preço final cobrado</Label>
-                        <Input id="valorCobrado" placeholder="Insira o Preço que sera cobrado" 
-                            {...register('valorCobrado')}
+                        <Label htmlFor="valor_cobrado">Preço final cobrado</Label>
+                        <Input id="valor_cobrado" placeholder="Insira o Preço que sera cobrado" type="string"
+                            {...register('valor_cobrado')}
                             />
                     </div>
                     <Button  >Enviar</Button>
                 </div>
                 </form>
-                <pre>{outPut}</pre>
+                
+                <pre className=" text-wrap">{outPut}</pre>
+           
             </div>
         </div>
     )
