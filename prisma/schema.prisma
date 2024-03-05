@@ -18,8 +18,8 @@ model Schedule {
   nome_cliente   String
   numero_celular String
   data           DateTime
-  hora_inicio    String
-  hora_fim       String
+  hora_inicio    DateTime
+  hora_fim       DateTime
   feriado        Boolean  @default(false)
   touro_mecanico Int      @default(0)
   fotos          Int      @default(0)
@@ -33,9 +33,6 @@ model Schedule {
   observacao     String
   valor_sugerido Float
   valor_cobrado  Float
-
-  @@unique([data, hora_inicio])
-  @@unique([data, hora_fim])
 }
 
 model Value {
