@@ -9,7 +9,6 @@
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { Checkbox } from "@/components/ui/checkbox"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { valideFormSchema } from "@/lib/schema"
@@ -17,6 +16,7 @@ import { z } from "zod"
 import { useEffect } from "react"
 import { useState } from "react"
 import axios, { AxiosError } from 'axios';
+import {toast} from 'react-toastify'
 
 type TypeValideFormSchema = z.infer<typeof valideFormSchema>
 
@@ -42,15 +42,23 @@ export const _formComponent = () => {
                 headers:
                     { 'Content-Type': 'application/json' }
             });
-
+           
+            toast.success('Agendado com Sucesso!', {
+                autoClose: 2000
+            })
+            
             console.log('Resposta da API:', response.data);
         }
         catch (error) {
             if (axios.isAxiosError(error)) {
                 console.error('Erro ao enviar requisição:');
+                
                 if (error.response) {
                     console.log(error.response.data);
                     console.log("Error Status:" + error.response.status);
+                    
+                    toast.error(JSON.stringify(error.response.data), { 
+                        autoClose: 5000,});
                 }
 
             } else {
