@@ -19,11 +19,11 @@ export const PopUpButton = () => {
 
   const handleCheckError = async () => {
     try {
-      const response = await axios.get("./api/schedule");
+      const response = await axios.get("/api/schedule");
       setErrorMessage("");
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        setErrorMessage("Erro ao comunicar com a API: " + error.response?.data.error);
+        setErrorMessage("Erro ao comunicar com a API: " + error.message);
       } else {
         setErrorMessage("Erro ao comunicar com a API. Tente novamente mais tarde.");
       }
