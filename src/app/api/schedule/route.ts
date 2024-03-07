@@ -8,6 +8,7 @@ import { HourFormat } from '@/utils/hoursFormat';
 import isBetween from 'dayjs/plugin/isBetween'
 import { NextApiResponse } from 'next';
 import { json } from 'stream/consumers';
+
 export async function GET(req: NextRequest) {
     const data = req.nextUrl.searchParams.get("date") as string;
     //data format yyyy-mm-dd
@@ -29,9 +30,10 @@ export async function GET(req: NextRequest) {
 
 
     if (schedules.length === 0) {
-        return Response.json({ error: "Nenhum agendamento encontrado" })
+        return new Response(JSON.stringify({ error: "Nenhum agendamento encontrado" }))
+        
     }
-    return Response.json(schedules)
+    return new Response(JSON.stringify(schedules))
 
 }
 

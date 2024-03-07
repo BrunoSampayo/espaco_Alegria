@@ -36,16 +36,29 @@ model Schedule {
 }
 
 model Value {
-  versao           Int      @id @default(autoincrement())
+  id               Int      @id @default(autoincrement())
+  title            String   @unique
   data_modificacao DateTime @default(now()) @updatedAt
-  valor_padrao     Int
-  valor_feriado    Int
-  touro_mecanico   Int
-  fotos            Int
-  garcom           Int
-  dj               Int
-  climatizacao     Int
-  churrasqueira    Int
-  telao            Int
-  taxa_luz         Int
+  valor_padrao     Float
+  valor_feriado    Float
+  touro_mecanico   Float
+  fotos            Float
+  garcom           Float
+  dj               Float
+  climatizacao     Float
+  churrasqueira    Float
+  telao            Float
+  taxa_luz         Float
+}
+
+model Extra {
+  id               Int      @id @default(autoincrement())
+  title            String   @unique
+  data_modificacao DateTime @default(now()) @updatedAt
+  salao            Float
+  Monitores        Float
+  garcom           Float
+  climatizacao     Float
+  dj               Float
+  telao            Float
 }
