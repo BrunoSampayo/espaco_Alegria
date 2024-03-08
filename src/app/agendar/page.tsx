@@ -1,7 +1,5 @@
 
-import { _formComponent, UserIcon } from "@/components/_componentForm"
-import { PopUpButton } from "@/components/popup"
-import { error } from "console"
+import { _formComponent, UserIcon } from "@/components/layout/scheduleForm"
 import {ToastContainer} from 'react-toastify'
 import 'react-toastify/ReactToastify.min.css';
 
