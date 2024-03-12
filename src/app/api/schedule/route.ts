@@ -3,11 +3,10 @@ import { scheduleSchema } from '@/lib/schema'
 import { NextRequest } from 'next/server';
 import 'dayjs'
 import dayjs from 'dayjs';
-import { Prisma } from '@prisma/client';
 import { HourFormat } from '@/utils/hoursFormat';
 import isBetween from 'dayjs/plugin/isBetween'
 import { NextApiResponse } from 'next';
-import { json } from 'stream/consumers';
+import { ZodError } from 'zod';
 
 export async function GET(req: NextRequest) {
     const data = req.nextUrl.searchParams.get("date") as string;
@@ -96,6 +95,9 @@ export async function POST(req: Request, res: NextApiResponse) {
     }
     catch (err) {
         const error: any = err
+        if(err instanceof ZodError){
+            return new Response(JSON.stringify({ error: error.format() }), { status: 400 })
+        }
         return new Response(JSON.stringify({ error: error.message }), { status: 400 })
     }
 
