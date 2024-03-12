@@ -8,7 +8,7 @@ const stringtoIntwithValue = (defaultValue: string, max: number) => stringTransf
 export const scheduleSchema = z.object({
     nome_cliente: z.string(),
     numero_celular: z.string(),
-    data: stringTransformToDate,
+    data: z.date(),
     hora_inicio: z.string(),
     hora_fim: z.string(),
     feriado: z.boolean(),
@@ -27,12 +27,12 @@ export const scheduleSchema = z.object({
 })
 
 export const valideFormSchema = z.object({
-    nome_cliente: z.string(),
+    nome_cliente: z.string().min(2),
     numero_celular: z.string().optional(),
-    data: z.string(),
+    data: z.coerce.date().refine((data)=>data>new Date(),{message: "Data inválida"}),
     hora_inicio: z.string(),
     hora_fim: z.string(),
-    feriado: z.boolean(),
+    feriado: z.coerce.boolean(),
     garcom: stringtoIntwithValue('0', 4),
     touro_mecanico: stringtoIntwithValue('0', 1),
     taxa_luz: stringtoIntwithValue('0', 4),

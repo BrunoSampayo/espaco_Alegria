@@ -5,7 +5,6 @@ import "./globals.css";
 import background from "../../public/images/background.png"
 import { Header } from "@/components/layout/header";
 
-
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -20,9 +19,8 @@ export default function RootLayout({
 }>) {
   return (
     <html className="" lang="en">
-
-
       <body className={inter.className}>
+        
         <Header />
         {children}
       </body>
