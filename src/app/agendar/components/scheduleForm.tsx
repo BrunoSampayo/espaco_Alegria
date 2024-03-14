@@ -15,7 +15,7 @@ type FormData = z.infer<typeof valideFormSchema>
 
 export const _formComponent = () => {
 
-    const { handleSubmit, register, formState: { errors }, watch } = useForm<FormData>({ mode: "onBlur", resolver: zodResolver(valideFormSchema) })
+    const { handleSubmit, register, formState: { errors }, watch,setValue } = useForm<FormData>({ mode: "onBlur", resolver: zodResolver(valideFormSchema) })
 
     //const watchFields =watch(['touro_mecanico','fotos','garcom','dj','climatizacao','churrasqueira','telao','taxa_luz','valor_buffet','feriado'])
     const watchFields = {
@@ -31,12 +31,20 @@ export const _formComponent = () => {
         'valor_buffet': Number(watch('valor_buffet'))
     }
 
-   useEffect(()=>{
+   useEffect( () =>{
     let dados = Object.entries(watchFields)
     for(let i in dados){
         if(isNaN(Number(dados[i][1])) || dados[i][1]===undefined) return
     }
-    pricing(watchFields)
+    async function fetchPrice(){
+        const valor = await pricing(watchFields)
+       
+         
+        setValue('valor_sugerido',String(valor) + " R$")   
+        
+    }
+    fetchPrice()
+   
    },[watchFields])
 
 
