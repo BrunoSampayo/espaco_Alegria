@@ -1,5 +1,8 @@
-import { ValuesType } from "@/types";
+"use server"
 
+type arrayField = [string, number | boolean];
+
+import { ValuesType } from "@/types";
 type fieldsType = {
     churrasqueira: number,
     climatizacao: number,
@@ -11,95 +14,107 @@ type fieldsType = {
     telao: number,
     touro_mecanico: number,
     valor_buffet: number
-    
+
 };
 
-const calcularPrecoServico = (servico: string, horas: number) => {
-    switch (servico) {
-        case "churrasqueira":
-            const precoHoraChurrasqueira = 150
-            return precoHoraChurrasqueira
-          
-        case "climatizacao":    
-            const limiteClimatizacao = 4; 
-            const precoHoraClimatizacao = 140; 
-            const precoHoraExtraCliamtizacao = 30; 
-            if (horas <= limiteClimatizacao) {
-                return precoHoraClimatizacao;
-            } else {
-                const horasExtrasGarcom = horas - limiteClimatizacao;
-                return precoHoraClimatizacao + (horasExtrasGarcom * precoHoraExtraCliamtizacao);
-            }           
-          
-        case "dj":
-            const limitteDj = 4;
-            const precoHoraDj = 600;
-            const precoHoraExtraDj = 150;
-            if(horas <= limitteDj) {
-                return precoHoraDj;
-            }else {
-                const horasExtrasDj = horas - limitteDj;
-                return precoHoraDj + (horasExtrasDj * precoHoraExtraDj);
-            }
-          
-        case "fotos":
-            const precoHoraFotos = 200;
-            return precoHoraFotos;
-          
-        case "garcom":
-            const limiteGarcom = 4; 
-            const precoHoraGarcom = 140; 
-            const precoHoraExtraGarcom = 35; 
-            if (horas <= limiteGarcom) {
-                return precoHoraGarcom;
-            } else {
-                const horasExtrasGarcom = horas - limiteGarcom;
-                return precoHoraGarcom + (horasExtrasGarcom * precoHoraExtraGarcom);
-            }           
-          
-        case "taxa_luz":
-            const precoHoraTaxaLuz = 70;
-            return precoHoraTaxaLuz;
-          
-        case "telao":
-            const limiteTelao = 4;
-            const precoHoraTelao = 70;
-            const precoHoraExtraTelao =45;
-            if(horas <= limiteTelao){
-                return precoHoraTelao
-            }else{
-                const horasExtrasTelao = horas - limiteTelao;
-                return precoHoraTelao + (horasExtrasTelao * precoHoraExtraTelao);
-            }
-          
-        case "touro_mecanico":
-            const precoHoraTouroMecanico = 120;
-            return precoHoraTouroMecanico;
-            
-        default:
-            return 0; 
-    }
-};
 
 const getValues = async () => {
-    const values = await fetch("http://localhost:3000/api/values", { cache: 'force-cache', next: { revalidate: 3600 } });
+    const values = await fetch("http://localhost:3000/api/values", { cache: 'force-cache' });
     const data: Promise<ValuesType> = await values.json();
     return data;
 };
 
-export const pricing = async (fields: fieldsType) => {
+let total = 0;
+const calcularPrecoServico = async (array: arrayField) => {
+
     const { values, extra } = await getValues();
-    
-    values.churrasqueira = calcularPrecoServico("churrasqueira", fields.churrasqueira);
-    values.climatizacao = calcularPrecoServico("climatizacao", fields.climatizacao);
-    values.dj = calcularPrecoServico("dj", fields.dj);
-    values.fotos = calcularPrecoServico("fotos", fields.fotos)
-    values.garcom = calcularPrecoServico("garcom", fields.garcom);
-    values.taxa_luz = calcularPrecoServico("taxa_luz", fields.taxa_luz);
-    values.telao = calcularPrecoServico("telao", fields.telao);
-    values.touro_mecanico = calcularPrecoServico("touro_mecanico", fields.touro_mecanico);
 
-    
+    switch (array[0]) {
+        case "churrasqueira":
+            if (Number(array[1]) > 0) {
+                total += values.churrasqueira
+            }
 
-    console.log(values)
+            break
+
+        case "climatizacao":
+            if (Number(array[1]) > 0) {
+                if (Number(array[1]) > 4) {
+                    total += values.climatizacao + (Number(array[1]) - 4) * extra.climatizacao
+                }
+                total += values.climatizacao
+            }
+            break
+
+        case "dj":
+            if (Number(array[1]) > 0) {
+                if (Number(array[1]) > 4) {
+                    total += values.dj + (Number(array[1]) - 4) * extra.dj
+                }
+                total += values.dj
+            }
+            break;
+
+        case "fotos":
+            if (Number(array[1]) > 0) {
+                total += (Number(array[1]) * values.fotos)
+            }
+            break;
+
+        case "garcom":
+            if (Number(array[1]) > 0) {
+                if (Number(array[1]) > 4) {
+                    total += values.garcom + (Number(array[1]) - 4) * extra.garcom
+                }
+                total += values.garcom
+            }
+            break;
+        case "taxa_luz":
+            if (Number(array[1]) > 0) {
+                total += values.taxa_luz
+            }
+            break;
+
+        case "telao":
+            if (Number(array[1]) > 0) {
+                if (Number(array[1]) > 4) {
+                    total += values.telao + (Number(array[1]) - 4) * extra.telao
+                }
+                total += values.telao
+            }
+            break;
+
+        case "touro_mecanico":
+            if (Number(array[1]) > 0) {
+                total += (Number(array[1]) * values.touro_mecanico)
+            }
+            break;
+        case "feriado":
+            if (Boolean(array[1])) {
+                total += values.valor_feriado
+            } else {
+                total += values.valor_padrao
+            }
+
+            break
+    }
+
+};
+
+
+
+export const pricing = async (fields: fieldsType) => {
+
+    const data = Object.entries(fields)
+
+    await Promise.all(data.map(async (entry) => {
+        if (entry[1] !== 0) {
+            await calcularPrecoServico(entry);
+
+        }
+    }));
+    const resultado = total;
+    total = 0;
+    return resultado;
+
 }
