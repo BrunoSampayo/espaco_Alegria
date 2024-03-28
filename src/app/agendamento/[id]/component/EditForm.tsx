@@ -4,19 +4,21 @@ import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { useEffect } from 'react'
-import { addSchedule } from '@/app/_actions'
 import { z } from 'zod'
 import { valideFormSchema } from '@/lib/schema'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { pricing } from '@/utils/pricing'
+import { Schedule } from '@prisma/client'
+import dayjs from 'dayjs'
+import utc from 'dayjs/plugin/utc'
+import { editSchedule } from '../action'
 import { toast } from '@/components/ui/use-toast'
-import axios, { AxiosError } from 'axios'
-import { useRouter } from 'next/navigation'
 
 type FormData = z.infer<typeof valideFormSchema>
 
-export const FormComponent = () => {
+export const EditFormComponent = ({ schedule }: { schedule: Schedule }) => {
+  dayjs.extend(utc)
   const {
     handleSubmit,
     register,
@@ -27,7 +29,7 @@ export const FormComponent = () => {
     mode: 'onBlur',
     resolver: zodResolver(valideFormSchema),
   })
-  const router = useRouter()
+
   const watchFields = {
     feriado: watch('feriado'),
     touro_mecanico: Number(watch('touro_mecanico')),
@@ -54,51 +56,38 @@ export const FormComponent = () => {
     fetchPrice()
   }, [watchFields])
 
-  async function action(data: any) {
-    try {
-      const result = await axios.post('/api/schedule', data, {
-        headers: { 'Content-Type': 'application/json' },
-      })
+  async function action(data: FormData) {
+    const edited = await editSchedule(schedule.id, data)
 
-      if (result.status === 201) {
-        toast({
-          title: 'Novo Agendamento criado',
-          description: (
-            <>
-              <span className="block">
-                id: {result.data.novoAgendamento.id}
-              </span>
-              <span className="block">
-                nome: {result.data.novoAgendamento.nome_cliente}
-              </span>
-              <span className="block">
-                data: {result.data.novoAgendamento.data}
-              </span>
-            </>
-          ),
-        })
-        // router.push('/app')
-        console.log(result)
-      }
-    } catch (error) {
-      if (error instanceof AxiosError) {
-        toast({
-          title: 'OPS ocorreu um erro',
-          description: error.response?.data.error,
-          variant: 'destructive',
-        })
-      } else {
-        toast({
-          title: 'OPS ocorreu um erro',
-          description: 'Erro desconhecido',
-          variant: 'destructive',
-        })
-      }
+    if (edited.id) {
+      return toast({
+        title: 'Agendamento Editado',
+        variant: 'default',
+        description: (
+          <>
+            <span className="block">id:{edited.id} </span>
+            <span className="block">nome: {edited.nome_cliente} </span>
+          </>
+        ),
+      })
+    } else {
+      return toast({
+        title: 'Agendamento Editado',
+        variant: 'destructive',
+        description: (
+          <>
+            <span className="block">erro:{edited.error} </span>
+          </>
+        ),
+      })
     }
   }
 
   return (
     <div>
+      <h1 className="text-center mb-8 font-bold ">
+        Editar Agendamento de {schedule.nome_cliente}
+      </h1>
       <form onSubmit={handleSubmit((data) => action(data))}>
         <div className="space-y-6">
           <div className="grid grid-cols-2 gap-6">
@@ -108,6 +97,7 @@ export const FormComponent = () => {
                 placeholder="Nome do cliente"
                 type="text"
                 {...register('nome_cliente')}
+                defaultValue={schedule.nome_cliente}
               />
               {errors.nome_cliente?.message && (
                 <p className="text-sm text-red-700">
@@ -121,6 +111,7 @@ export const FormComponent = () => {
                 placeholder="Telefone do cliente"
                 type="tel"
                 {...register('numero_celular')}
+                defaultValue={schedule.numero_celular}
               />
               {errors.numero_celular?.message && (
                 <p className="text-sm text-red-700">
@@ -132,7 +123,12 @@ export const FormComponent = () => {
           <div className="grid grid-cols-2 justify-center items-center md:grid-cols-4 gap-10">
             <div className="space-y-2">
               <Label htmlFor="data">Dia</Label>
-              <Input required type="date" {...register('data')} />
+              <Input
+                required
+                type="date"
+                defaultValue={dayjs.utc(schedule.data).format('YYYY-MM-DD')}
+                {...register('data')}
+              />
               {errors.data?.message && (
                 <p className="text-sm text-red-700">*{errors.data?.message}</p>
               )}
@@ -143,6 +139,7 @@ export const FormComponent = () => {
               </Label>
               <Input
                 type="checkbox"
+                defaultChecked={schedule.feriado}
                 className=" mx-16 border border-gray-400 bg-background h-7 w-7 rounded-full mt-2"
                 {...register('feriado')}
               />
@@ -154,6 +151,7 @@ export const FormComponent = () => {
                 required
                 type="time"
                 {...register('hora_inicio')}
+                defaultValue={dayjs.utc(schedule.hora_inicio).format('HH:mm')}
               />
             </div>
             <div className="space-y-2">
@@ -162,7 +160,10 @@ export const FormComponent = () => {
                 className=" w-24"
                 required
                 type="time"
-                defaultValue={'00:00'}
+                defaultValue={dayjs
+                  .utc(schedule.hora_fim)
+                  .subtract(dayjs.utc(schedule.hora_inicio).get('hour'), 'hour')
+                  .format('HH:mm')}
                 {...register('hora_fim')}
               />
             </div>
@@ -185,7 +186,7 @@ export const FormComponent = () => {
                   className="w-16"
                   type="number"
                   min={0}
-                  defaultValue={0}
+                  defaultValue={schedule.touro_mecanico}
                   {...register('touro_mecanico')}
                 />
               </div>
@@ -205,7 +206,7 @@ export const FormComponent = () => {
                   className="w-16"
                   type="number"
                   min={0}
-                  defaultValue={0}
+                  defaultValue={schedule.fotos}
                   {...register('fotos')}
                 />
               </div>
@@ -226,7 +227,7 @@ export const FormComponent = () => {
                   className="w-16"
                   type="number"
                   min={0}
-                  defaultValue={0}
+                  defaultValue={schedule.garcom}
                   {...register('garcom')}
                 />
               </div>
@@ -246,7 +247,7 @@ export const FormComponent = () => {
                   className="w-16"
                   type="number"
                   min={0}
-                  defaultValue={0}
+                  defaultValue={schedule.dj}
                   {...register('dj')}
                 />
               </div>
@@ -267,7 +268,7 @@ export const FormComponent = () => {
                   className="w-16"
                   type="number"
                   min={0}
-                  defaultValue={0}
+                  defaultValue={schedule.climatizacao}
                   {...register('climatizacao')}
                 />
               </div>
@@ -290,7 +291,7 @@ export const FormComponent = () => {
                   className="w-16"
                   type="number"
                   min={0}
-                  defaultValue={0}
+                  defaultValue={schedule.churrasqueira}
                   {...register('churrasqueira')}
                 />
               </div>
@@ -310,7 +311,7 @@ export const FormComponent = () => {
                   className="w-16"
                   type="number"
                   min={0}
-                  defaultValue={0}
+                  defaultValue={schedule.telao}
                   {...register('telao')}
                 />
               </div>
@@ -331,7 +332,7 @@ export const FormComponent = () => {
                   className="w-16"
                   type="number"
                   min={0}
-                  defaultValue={0}
+                  defaultValue={schedule.taxa_luz}
                   {...register('taxa_luz')}
                 />
               </div>
@@ -350,7 +351,7 @@ export const FormComponent = () => {
               type="number"
               min={0}
               className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-              defaultValue={0}
+              defaultValue={schedule.valor_buffet}
               {...register('valor_buffet')}
             />
             {errors.valor_buffet?.message && (
@@ -381,7 +382,7 @@ export const FormComponent = () => {
               type="number"
               min={0}
               disabled
-              value={0}
+              defaultValue={schedule.observacao}
               {...register('valor_sugerido')}
             />
           </div>

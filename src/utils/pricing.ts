@@ -38,65 +38,40 @@ const calcularPrecoServico = async (array: arrayField) => {
             break
 
         case "climatizacao":
-            if (Number(array[1]) > 0) {
-                if (Number(array[1]) > 4) {
-                    total += values.climatizacao + (Number(array[1]) - 4) * extra.climatizacao
-                }
-                total += values.climatizacao
-            }
-            break
-
         case "dj":
+        case "garcom":
+        case "telao":
             if (Number(array[1]) > 0) {
+                
                 if (Number(array[1]) > 4) {
-                    total += values.dj + (Number(array[1]) - 4) * extra.dj
+                    total += values[array[0]] + (Number(array[1]) - 4) * extra[array[0]]
                 }
-                total += values.dj
+                total += values[array[0]]
             }
             break;
 
         case "fotos":
+        case "touro_mecanico":
             if (Number(array[1]) > 0) {
-                total += (Number(array[1]) * values.fotos)
+                total += (Number(array[1]) * values[array[0]])
             }
             break;
 
-        case "garcom":
-            if (Number(array[1]) > 0) {
-                if (Number(array[1]) > 4) {
-                    total += values.garcom + (Number(array[1]) - 4) * extra.garcom
-                }
-                total += values.garcom
-            }
-            break;
+
+
         case "taxa_luz":
             if (Number(array[1]) > 0) {
                 total += values.taxa_luz
             }
             break;
 
-        case "telao":
-            if (Number(array[1]) > 0) {
-                if (Number(array[1]) > 4) {
-                    total += values.telao + (Number(array[1]) - 4) * extra.telao
-                }
-                total += values.telao
-            }
-            break;
 
-        case "touro_mecanico":
-            if (Number(array[1]) > 0) {
-                total += (Number(array[1]) * values.touro_mecanico)
-            }
-            break;
         case "feriado":
-            if (Boolean(array[1])) {
-                total += values.valor_feriado
-            } else {
-                total += values.valor_padrao
-            }
-
+            total += array[1] ? values.valor_feriado : values.valor_padrao
             break
+            case "valor_buffet":
+                total += Number(array[1])
+                break;
     }
 
 };
@@ -110,8 +85,10 @@ export const pricing = async (fields: fieldsType) => {
     await Promise.all(data.map(async (entry) => {
         if (entry[1] !== 0) {
             await calcularPrecoServico(entry);
-
+            
         }
+        
+        
     }));
     const resultado = total;
     total = 0;

@@ -30,7 +30,7 @@ export async function GET(req: NextRequest) {
 
     if (schedules.length === 0) {
         return new Response(JSON.stringify({ error: "Nenhum agendamento encontrado" }))
-        
+
     }
     return new Response(JSON.stringify(schedules))
 
@@ -40,65 +40,71 @@ export async function GET(req: NextRequest) {
 export async function POST(req: Request, res: NextApiResponse) {
     const data = await req.json()
 
-    try {
-        const validetedSchema = scheduleSchema.parse(data)
 
-        const [horaInicio, horaFim] = HourFormat(validetedSchema.data, validetedSchema.hora_inicio, validetedSchema.hora_fim)
+    const validetedSchema = scheduleSchema.safeParse(data)
+    if (!validetedSchema.success) {
+        console.error("erro validecao api: " + validetedSchema.error.issues)
+        throw new Error("Erro de validação na API, peça para adminstrador checar os logs do sistema")
+    }
 
 
-        const scheduleScheck = await prisma.schedule.findMany({
-            where: {
-                data: validetedSchema.data
-            }
-        })
-        //verifica se veio dado e se veio caso for cadastrar nao existe nenhum registro no mesmo horario marcado
-        if (scheduleScheck.length > 0) {
-            for (let i in scheduleScheck) {
-                dayjs.extend(isBetween);
-                dayjs(horaInicio).isBetween(scheduleScheck[i].hora_inicio, scheduleScheck[i].hora_fim)
-                return new Response(JSON.stringify({
-                    error:
-                        `Erro de campo único duplicado, nao pode haver agendamento no mesmo dia com mesma hora de inicio ou fim de evento, pois a um agendamento no nome de ${scheduleScheck[i].nome_cliente}`
-                }), { status: 400 }
-                )
-            }
+
+    const [horaInicio, horaFim] = HourFormat(validetedSchema.data.data, validetedSchema.data.hora_inicio, validetedSchema.data.hora_fim)
+
+
+    const scheduleScheck = await prisma.schedule.findMany({
+        where: {
+            data: validetedSchema.data.data
         }
+    })
+    //verifica se veio dado e se veio caso for cadastrar nao existe nenhum registro no mesmo horario marcado
+    if (scheduleScheck.length > 0) {
+        for (let i in scheduleScheck) {
+            dayjs.extend(isBetween);
+            dayjs(horaInicio).isBetween(scheduleScheck[i].hora_inicio, scheduleScheck[i].hora_fim)
+            return new Response(JSON.stringify({
+                error:
+                    `Erro de campo único duplicado, nao pode haver agendamento no mesmo dia com mesma hora de inicio ou fim de evento, pois a um agendamento no nome de ${scheduleScheck[i].nome_cliente}`
+            }), { status: 400 }
+            )
+        }
+    }
 
 
-
+    try {
         const newSchedule = await prisma.schedule.create({
             data: {
-                nome_cliente: validetedSchema.nome_cliente,
-                numero_celular: validetedSchema.numero_celular,
-                data: validetedSchema.data,
+                nome_cliente: validetedSchema.data.nome_cliente,
+                numero_celular: validetedSchema.data.numero_celular,
+                data: validetedSchema.data.data,
                 hora_inicio: horaInicio,
                 hora_fim: horaFim,
-                feriado: validetedSchema.feriado,
-                touro_mecanico: validetedSchema.touro_mecanico,
-                fotos: validetedSchema.fotos,
-                garcom: validetedSchema.garcom,
-                dj: validetedSchema.dj,
-                climatizacao: validetedSchema.climatizacao,
-                churrasqueira: validetedSchema.churrasqueira,
-                telao: validetedSchema.telao,
-                taxa_luz: validetedSchema.taxa_luz,
-                observacao: validetedSchema.observacao,
-                valor_cobrado: validetedSchema.valor_cobrado,
-                valor_sugerido: validetedSchema.valor_sugerido,
-                valor_buffet: validetedSchema.valor_buffet
+                feriado: validetedSchema.data.feriado,
+                touro_mecanico: validetedSchema.data.touro_mecanico,
+                fotos: validetedSchema.data.fotos,
+                garcom: validetedSchema.data.garcom,
+                dj: validetedSchema.data.dj,
+                climatizacao: validetedSchema.data.climatizacao,
+                churrasqueira: validetedSchema.data.churrasqueira,
+                telao: validetedSchema.data.telao,
+                taxa_luz: validetedSchema.data.taxa_luz,
+                observacao: validetedSchema.data.observacao,
+                valor_cobrado: validetedSchema.data.valor_cobrado,
+                valor_sugerido: validetedSchema.data.valor_sugerido,
+                valor_buffet: validetedSchema.data.valor_buffet
             }
 
         })
         return new Response(JSON.stringify({ novoAgendamento: newSchedule }), { status: 201 })
-        
-        
+
+
     }
     catch (err) {
         const error: any = err
-        if(err instanceof ZodError){
-            return new Response(JSON.stringify({ error: error.format() }), { status: 400 })
+        if (err instanceof ZodError) {
+            return new Response(JSON.stringify({ error: error.format() }),)
         }
-        return new Response(JSON.stringify({ error: error.message }), { status: 400 })
+        return new Response(JSON.stringify({ error: error.message }),)
     }
 
 

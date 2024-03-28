@@ -2,8 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
- body {
-  background: linear-gradient(#215361, #09212B);
+ html,body:root {
+  height: 100%;
   
 }
  
