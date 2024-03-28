@@ -8,14 +8,11 @@ async function getData(): Promise<Schedule[]> {
   return schedules
 }
 
-export default async function Page() {
+export default async function EventTable() {
   const data = await getData()
 
   return (
-    <div className="container mx-auto py-10 min-h-screen">
-      <h1 className="text-center text-white font-bold text-2xl drop-shadow-lg">
-        Sistema de Agendamento de eventos
-      </h1>
+    <div className="container mx-auto py-10">
       <DataTable columns={columns} data={data} />
     </div>
   )

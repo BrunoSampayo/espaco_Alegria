@@ -12,8 +12,8 @@ export default async function Values() {
    const {values,extra} = await getValues();
     
     return (
-        <div className="  grid grid-cols-2 gap-2 bg-white rounded-lg border border-gray-200 text-black">
-            <div className="mx-auto">
+        <div className="  grid grid-cols-1 md:grid-cols-2 gap-2 p-2 bg-white rounded-lg border border-gray-200 text-black">
+            <div className="mx-auto shadow-md p-6 w-full">
                 <h2 className="text-center text-xl font-semibold">Valores</h2>
                 <ul className="text-sm list-disc">
                     <li className="my-1">Valor dia de semana: <strong>R$ {values?.valor_padrao.toFixed(2)}</strong> </li>
@@ -27,8 +27,9 @@ export default async function Values() {
                     <li className="my-1">Telão: <strong>R$ {values?.telao.toFixed(2)}</strong> (4h)</li>
                     <li className="my-1">Taxa de luz:<strong> R$ {values?.taxa_luz.toFixed(2)}</strong> (4h)</li>
                 </ul>
+                <h1 className="font-bold text-xs text-center ">Data Modificação valores normais: {dayjs(values?.data_modificacao).format('DD/MM/YYYY')}</h1>
             </div>
-            <div className="mx-auto">
+            <div className="mx-auto shadow-md p-6 w-full">
                 <h2 className="text-center text-xl font-semibold">Horas Extras</h2>
                 <ul className="text-sm list-disc">
                     <li className="my-1">Salão: <strong>R$ {extra?.salao.toFixed(2)}</strong></li>
@@ -39,9 +40,10 @@ export default async function Values() {
                     <li className="my-1">Telão: <strong>R$ {extra?.telao.toFixed(2)}</strong></li>
                     
                 </ul>
+                <h1 className="font-bold text-xs  text-center">Data Modificação valores extra: {dayjs(extra?.data_modificacao).format('DD/MM/YYYY')}</h1>
             </div>
-                <h1 className="font-bold text-xs ">Data Modificação valores normais: {dayjs(values?.data_modificacao).format('DD/MM/YYYY')}</h1>
-                <h1 className="font-bold text-xs ">Data Modificação valores extra: {dayjs(extra?.data_modificacao).format('DD/MM/YYYY')}</h1>
+              
+                
         </div>
     )
 }

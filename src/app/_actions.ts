@@ -1,48 +1,44 @@
+'use server'
+import prisma from '@/lib/prisma'
+import dayjs from 'dayjs'
+import utc from 'dayjs/plugin/utc'
+import { revalidatePath } from 'next/cache'
+dayjs.extend(utc)
+export async function getSchedules(mes?: FormData) {
+  if (mes) {
+    const data = mes.get('mes') as string // 2024-07
+    const fdata = dayjs(data).format('YYYY-MM-DD')
+    const firstDayOfMonth = new Date(
+      dayjs.utc(fdata).startOf('month').format('YYYY-MM-DD'),
+    )
+    const lastDayOfMonth = new Date(
+      dayjs.utc(fdata).endOf('month').format('YYYY-MM-DD'),
+    )
 
-"use server"
-import { ZodError, ZodFormattedError } from "zod"
-import { valideFormSchema } from "@/lib/schema"
-import axios from "axios"
+    const schedules = await prisma.schedule.findMany({
+      where: {
+        data: {
+          lte: lastDayOfMonth,
+          gte: firstDayOfMonth,
+        },
+      },
+    })
+    return schedules
+  } else {
+    const schedules = await prisma.schedule.findMany({
+      orderBy: [{ data: 'desc' }],
+      where: {},
+    })
 
-
-export async function addSchedule(form: FormData) {
-    const formData = Object.fromEntries(form.entries())
-    
-    const parseData = valideFormSchema.safeParse(formData)
-    
-    if (!parseData.success) {
-        return { error: parseData.error.format() }
-    }
-    console.log(parseData)
-
-    try {
-        const response = await axios.post('http://localhost:3000/api/schedule',parseData.data , {
-            headers:
-                { 'Content-Type': 'application/json' }
-        });
-       
-       
-        
-        console.log('Resposta da API:', response.data);
-    }
-    catch (error) {
-       
-   
-        if (axios.isAxiosError(error)) {
-            console.error('Erro ao enviar requisição:' ,error.response?.data);
-            
-            if (error.response) {
-              
-                throw new Error(error.response.data.error)
-               
-            }
-
-        } else {
-            console.log(error)
-        }
-
-    }
+    return schedules
+  }
 }
 
-
-
+export async function deleteSchedule(scheduleId: string) {
+  await prisma.schedule.delete({
+    where: {
+      id: scheduleId,
+    },
+  })
+  revalidatePath('/')
+}
